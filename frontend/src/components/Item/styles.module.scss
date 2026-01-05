@@ -1,0 +1,77 @@
+main .item {
+  width: 32%;
+  margin-bottom: 50px;
+  overflow: hidden;
+  position: relative;
+}
+
+.itemImg {
+  position: relative;
+  overflow: hidden;
+}
+
+main b {
+  margin: 10px 20px;
+  color: #333;
+}
+
+.itemTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px 20px;
+  color: #333;
+}
+
+.itemInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-height: 105px;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+.addCart {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px 0;
+  background-color: rgba(245, 245, 245, 0.43);
+  color: black;
+  text-align: center;
+  font-weight: 500;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.itemImg .addCart {
+  transform: translateY(100%);
+  transition: all 0.3s ease;
+}
+
+.itemImg:hover .addCart {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.addCart:hover {
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+}
+
+.heartIcon {
+  opacity: 0;
+}
+
+.item:hover .heartIcon {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
