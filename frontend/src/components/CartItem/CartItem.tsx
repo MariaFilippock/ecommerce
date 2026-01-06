@@ -20,20 +20,20 @@ const CartItem = ({item}: IProps) => {
 
     const handleRemoveItemFromCart = () => {
         dispatch(removeItemFromCartAC(item.id));
-    }
+    };
 
     const handleAddItemToCart = () => {
         dispatch(addItemAtCartAC(item.id));
-    }
+    };
 
     const handleItemDetailCardClick = () => {
-        navigate(`${ROUTES.ITEM}/${item.id}`);
-    }
+        navigate(`${ROUTES.ITEMS}/${item.id}`);
+    };
 
     return (
         <div className={styles.item}>
             <div className={styles.itemImg} onClick={handleItemDetailCardClick}>
-                <img alt={item.title} src={'./img/' + item.img}/>
+                <img alt={item.title} src={`http://localhost:5001/img/${item.img}`}/>
             </div>
 
             <div className={styles.itemInfo}>

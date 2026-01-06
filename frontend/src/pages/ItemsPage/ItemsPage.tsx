@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import itemsData from '../../data/data.json';
 import {IAppState, ItemType} from '../../models';
 import {setItemsAC} from '../../store/items-reducer';
 import Item from '../../components/Item/Item';
@@ -14,11 +13,16 @@ const ItemsPage = () => {
     const items = useSelector((state: IAppState) => state.itemsData.items);
 
     useEffect(() => {
-        dispatch(setItemsAC(itemsData.items));
-    }, []);
+        fetch('http://localhost:5001/api/items')
+            .then(res => res.json())
+            .then(data => {
+                dispatch(setItemsAC(data))
+            })
+            .catch(err => console.error(err))
+    }, [dispatch]);
 
     const handleItemDetailCardClick = (id: number) => {
-        navigate(`${ROUTES.ITEM}/${id}`);
+        navigate(`${ROUTES.ITEMS}/${id}`);
     }
 
     return (
@@ -28,6 +32,6 @@ const ItemsPage = () => {
             ))}
         </main>
     );
-}
+};
 
 export default ItemsPage;

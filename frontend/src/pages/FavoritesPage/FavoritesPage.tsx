@@ -8,6 +8,7 @@ import {useNavigate} from 'react-router-dom';
 
 const FavoritesPage = () => {
     const navigate = useNavigate();
+
     const selectFavoritesItems = (state: IAppState) =>
         state.itemsData.favorites
             .map((favId) =>
@@ -16,10 +17,9 @@ const FavoritesPage = () => {
 
     const favoritesList = useSelector(selectFavoritesItems);
 
-
     const handleItemDetailCardClick = (id: number) => {
-        navigate(`${ROUTES.ITEM}/${id}`);
-    }
+        navigate(`${ROUTES.ITEMS}/${id}`);
+    };
 
     return (
         <main>
