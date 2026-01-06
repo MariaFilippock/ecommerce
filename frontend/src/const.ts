@@ -4,6 +4,5 @@ export const TOGGLE_FAVORITE = 'TOGGLE_FAVORITE'; // добавляем в/уб�
 export const REMOVE_ITEM_FROM_CART = 'REMOVE_ITEM_FROM_CART'; // убираем из корзины
 
 export const ROUTES = {
-   ITEM : '/item',
    ITEMS : '/items',
 };

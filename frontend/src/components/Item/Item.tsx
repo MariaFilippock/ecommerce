@@ -17,16 +17,16 @@ const Item = ({item, onCardClick}: ItemProps) => {
 
     const handleAddItemAtCart = () => {
         dispatch(addItemAtCartAC(item.id));
-    }
+    };
 
     const handleToggleFavorites = () => {
         dispatch(toggleFavoritesAC(item.id));
-    }
+    };
 
     return (
         <div className={styles.item}>
             <div className={styles.itemImg}>
-                <img alt={item.title} src={'./img/' + item.img} onClick={() => onCardClick(item.id)}/>
+                <img alt={item.title} src={`http://localhost:5001/img/${item.img}`} onClick={() => onCardClick(item.id)}/>
                 <div className={styles.addCart} onClick={handleAddItemAtCart}>
                     Добавить в корзину
                 </div>
@@ -44,6 +44,6 @@ const Item = ({item, onCardClick}: ItemProps) => {
             </div>
         </div>
     );
-}
+};
 
 export default Item;
