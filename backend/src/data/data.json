@@ -48,5 +48,15 @@
       "category": "chairs",
       "price": "59.99"
     }
+  ],
+  "cart": [
+    {
+      "id": 1,
+      "count": 2
+    },
+    {
+      "id": 5,
+      "count": 1
+    }
   ]
 }

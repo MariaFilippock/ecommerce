@@ -18,7 +18,7 @@ itemsRouter.get('/items/:id', (req, res) => {
     try {
         const id = Number(req.params.id);
         const foundItem = items.find(item => item.id === id);
-        console.log(foundItem)
+
         return res.json(foundItem);
     } catch (e) {
         res.status(500).json(e)
