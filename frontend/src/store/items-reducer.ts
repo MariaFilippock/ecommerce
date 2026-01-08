@@ -1,6 +1,6 @@
 import {AnyAction} from 'redux';
-import {ADD_ITEM_TO_CART, REMOVE_ITEM_FROM_CART, SET_ITEMS, TOGGLE_FAVORITE} from '../const';
-import {ItemsState, ItemType} from '../models';
+import {SET_CART, SET_ITEMS, TOGGLE_FAVORITE} from '../const';
+import {ItemAtCartType, ItemsState, ItemType} from '../models';
 
 let initialState: ItemsState = {
     items: [],
@@ -16,35 +16,10 @@ export const itemsReducer = (state = initialState, action: AnyAction) => {
                 items: action.items,
             }
         }
-        case ADD_ITEM_TO_CART: {
-            const itemId = action.payload;
-            const exists = state.cart.some(el => el.id === itemId);
-            const increaseCount = state.cart.map((i) => {
-                return i.id === itemId
-                    ? {...i, count: i.count + 1}
-                    : i
-            })
-
+        case SET_CART: {
             return {
                 ...state,
-                cart: exists
-                    ? increaseCount
-                    : [...state.cart, {id: itemId, count: 1}]
-            }
-        }
-        case REMOVE_ITEM_FROM_CART: {
-            const itemId = action.payload;
-            const foundItem = state.cart.find(el => el.id === itemId)!;
-            const decreaseCount = state.cart.map((i) => {
-                return i.id === itemId
-                    ? {...i, count: i.count - 1}
-                    : i
-            })
-            return {
-                ...state,
-                cart: foundItem.count > 1
-                    ? decreaseCount
-                    : state.cart.filter(i => i.id !== itemId)
+                cart: action.payload,
             }
         }
         case TOGGLE_FAVORITE: {
@@ -67,15 +42,10 @@ export const setItemsAC = (items: ItemType[]) => ({
     items
 });
 
-export const addItemAtCartAC = (id: number) => ({
-    type: ADD_ITEM_TO_CART,
-    payload: id
-});
-
-export const removeItemFromCartAC = (id: number) => ({
-    type: REMOVE_ITEM_FROM_CART,
-    payload: id,
-});
+export const setCartAC = (cart: ItemAtCartType[]) => ({
+    type: SET_CART,
+    payload: cart
+})
 
 export const toggleFavoritesAC = (id: number) => ({
     type: TOGGLE_FAVORITE,

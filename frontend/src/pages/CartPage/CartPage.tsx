@@ -1,30 +1,40 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styles from './styles.module.scss';
 import {ShoppingOutlined} from '@ant-design/icons';
-import {useSelector} from 'react-redux';
-import {IAppState} from '../../models';
 import CartItem from '../../components/CartItem/CartItem';
 import Utils from '../../CartUtils';
 import {ROUTES} from '../../const';
 import {useNavigate} from 'react-router-dom';
+import {useAppDispatch} from '../../store/hooks';
+import {setCartThunk} from '../../store/cart-thunks';
+import {useSelector} from 'react-redux';
+import {detailedCartItemType, IAppState} from '../../models';
 
 const CartPage = () => {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
     const cartItems = useSelector((state: IAppState) =>
-        state.itemsData.cart.map((cartItem) => {
-            const product = state.itemsData.items.find(item => item.id === cartItem.id)!
+        state.itemsData.cart
+            .map((cartItem) => {
+                const product = state.itemsData.items.find(item => item.id === cartItem.id);
 
-            return {
-                ...product,
-                count: cartItem.count,
-            }
-        })
+                if (!product) return null;
+
+                return {
+                    ...product,
+                    count: cartItem.count
+                }
+            })
+            .filter((i): i is detailedCartItemType => i !== null)
     );
 
+    useEffect(() => {
+        dispatch(setCartThunk());
+    }, [dispatch]);
 
     const handleItemsClick = () => {
         navigate(`${ROUTES.ITEMS}`);
-    }
+    };
 
     const quantity = Utils.cartItemsQuantity(cartItems);
     const totalCost = Utils.cartItemsTotalCost(cartItems);
