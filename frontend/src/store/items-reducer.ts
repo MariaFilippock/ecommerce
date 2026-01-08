@@ -23,14 +23,18 @@ export const itemsReducer = (state = initialState, action: AnyAction) => {
             }
         }
         case TOGGLE_FAVORITE: {
-            const id = action.payload;
-            const isFavorite = state.favorites.find(idItem => idItem === id);
             return {
                 ...state,
-                favorites: isFavorite
-                    ? state.favorites.filter(i => i !== id)
-                    : [...state.favorites, id],
+                favorites: action.payload,
             }
+            // const id = action.payload;
+            // const isFavorite = state.favorites.find(idItem => idItem === id);
+            // return {
+            //     ...state,
+            //     favorites: isFavorite
+            //         ? state.favorites.filter(i => i !== id)
+            //         : [...state.favorites, id],
+            // }
         }
         default:
             return state;
@@ -47,7 +51,7 @@ export const setCartAC = (cart: ItemAtCartType[]) => ({
     payload: cart
 })
 
-export const toggleFavoritesAC = (id: number) => ({
+export const setFavoritesAC = (favorites: number[]) => ({
     type: TOGGLE_FAVORITE,
-    payload: id
+    payload: favorites
 });

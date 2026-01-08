@@ -39,7 +39,7 @@ cartRouter.post('/cart', (req, res) => {
             existingItem.count += count;
 
             if (existingItem.count <= 0) {
-                cart = cart.filter(item => item.id !== id)
+                cart = cart.filter(item => item.id !== id);
             }
         } else if (count > 0) {
             cart.push({id, count});
@@ -47,7 +47,7 @@ cartRouter.post('/cart', (req, res) => {
 
         res.status(200).json(cart);
     } catch (e) {
-        res.status(500).json(e)
+        res.status(500).json(e);
     }
 });
 

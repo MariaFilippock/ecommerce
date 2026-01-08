@@ -49,5 +49,6 @@
       "price": "59.99"
     }
   ],
-  "cart": []
+  "cart": [],
+  "favorites": []
 }

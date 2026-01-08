@@ -1,11 +1,12 @@
 import React from 'react';
 import {IAppState, ItemType} from '../../models';
 import {useSelector} from 'react-redux';
-import {toggleFavoritesAC} from '../../store/items-reducer';
+// import {toggleFavoritesAC} from '../../store/items-reducer';
 import {HeartOutlined, HeartFilled} from '@ant-design/icons';
 import styles from './styles.module.scss';
 import {changeItemCountThunk} from '../../store/cart-thunks';
 import {useAppDispatch} from '../../store/hooks';
+import {toggleFavoritesThunk} from '../../store/favorites-thunk';
 
 interface ItemProps {
     item: ItemType;
@@ -22,7 +23,7 @@ const Item = ({item, onCardClick}: ItemProps) => {
     };
 
     const handleToggleFavorites = () => {
-        dispatch(toggleFavoritesAC(item.id));
+        dispatch(toggleFavoritesThunk(item.id));
     };
 
     return (
