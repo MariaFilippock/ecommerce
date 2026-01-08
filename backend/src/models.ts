@@ -6,3 +6,8 @@ export interface ItemType {
     category: string;
     price: string;
 }
+
+export interface ItemAtCartType {
+    id: number;
+    count: number;
+}

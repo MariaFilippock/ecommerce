@@ -1,9 +1,11 @@
 import React from 'react';
 import {IAppState, ItemType} from '../../models';
-import {useDispatch, useSelector} from 'react-redux';
-import {addItemAtCartAC, toggleFavoritesAC} from '../../store/items-reducer';
+import {useSelector} from 'react-redux';
+import {toggleFavoritesAC} from '../../store/items-reducer';
 import {HeartOutlined, HeartFilled} from '@ant-design/icons';
 import styles from './styles.module.scss';
+import {changeItemCountThunk} from '../../store/cart-thunks';
+import {useAppDispatch} from '../../store/hooks';
 
 interface ItemProps {
     item: ItemType;
@@ -13,10 +15,10 @@ interface ItemProps {
 const Item = ({item, onCardClick}: ItemProps) => {
     const favorites = useSelector((state: IAppState) => state.itemsData.favorites ?? []);
     const isFavorite = favorites.some((favoriteId) => favoriteId === item.id);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const handleAddItemAtCart = () => {
-        dispatch(addItemAtCartAC(item.id));
+        dispatch(changeItemCountThunk(item.id, +1));
     };
 
     const handleToggleFavorites = () => {
@@ -26,7 +28,7 @@ const Item = ({item, onCardClick}: ItemProps) => {
     return (
         <div className={styles.item}>
             <div className={styles.itemImg}>
-                <img alt={item.title} src={`http://localhost:5001/img/${item.img}`} onClick={() => onCardClick(item.id)}/>
+                <img alt={item.title} src={`/img/${item.img}`} onClick={() => onCardClick(item.id)}/>
                 <div className={styles.addCart} onClick={handleAddItemAtCart}>
                     Добавить в корзину
                 </div>

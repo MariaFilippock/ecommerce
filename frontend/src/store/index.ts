@@ -1,5 +1,8 @@
-import {combineReducers, createStore} from 'redux';
+import {applyMiddleware, combineReducers, createStore} from 'redux';
 import {itemsReducer} from '../store/items-reducer';
+import {thunk} from 'redux-thunk';
+
+
 
 let reducers = combineReducers({
     itemsData: itemsReducer,
@@ -18,9 +21,11 @@ const initState = () => {
     }
 };
 
+export type RootState = ReturnType<typeof reducers>;
+
 const persistedState = initState();
 
-export const store = createStore(reducers, persistedState);
+export const store = createStore(reducers, persistedState, applyMiddleware(thunk));
 
 store.subscribe(() => {
     try {

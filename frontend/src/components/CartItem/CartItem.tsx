@@ -2,28 +2,28 @@ import React from 'react';
 import styles from './styles.module.scss';
 import {MinusOutlined, PlusOutlined} from '@ant-design/icons';
 import {detailedCartItemType} from '../../models';
-import {useDispatch} from 'react-redux';
-import {addItemAtCartAC, removeItemFromCartAC} from '../../store/items-reducer';
 import {useNavigate} from 'react-router-dom';
 import {ROUTES} from '../../const';
 import CartUtils from '../../CartUtils';
+import {changeItemCountThunk} from '../../store/cart-thunks';
+import {useAppDispatch} from '../../store/hooks';
 
 interface IProps {
     item: detailedCartItemType,
 }
 
 const CartItem = ({item}: IProps) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const totalCost = CartUtils.totalCostPerItem(item);
 
     const handleRemoveItemFromCart = () => {
-        dispatch(removeItemFromCartAC(item.id));
+        dispatch(changeItemCountThunk(item.id, -1));
     };
 
     const handleAddItemToCart = () => {
-        dispatch(addItemAtCartAC(item.id));
+        dispatch(changeItemCountThunk(item.id, +1));
     };
 
     const handleItemDetailCardClick = () => {
@@ -33,7 +33,7 @@ const CartItem = ({item}: IProps) => {
     return (
         <div className={styles.item}>
             <div className={styles.itemImg} onClick={handleItemDetailCardClick}>
-                <img alt={item.title} src={`http://localhost:5001/img/${item.img}`}/>
+                <img alt={item.title} src={`/img/${item.img}`}/>
             </div>
 
             <div className={styles.itemInfo}>

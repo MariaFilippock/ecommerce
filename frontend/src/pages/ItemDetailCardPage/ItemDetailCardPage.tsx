@@ -8,13 +8,13 @@ const ItemDetailCardPage = () => {
     const [item, setItem] = useState<ItemType | null>(null);
 
     useEffect(() => {
-        if (!item && id) {
-            fetch(`http://localhost:5001/api/items/${id}`)
+        if (id) {
+            fetch(`/api/items/${id}`)
                 .then(res => res.json())
                 .then(data => setItem(data))
                 .catch(err => console.error(err))
         }
-    }, [])
+    }, [id])
 
     if (!item) {
         return <div>Товар не найден или загружается…</div>;
