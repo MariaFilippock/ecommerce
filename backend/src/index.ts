@@ -5,7 +5,7 @@ import favoritesRouter from './routes/favorites';
 import productsRouter from './routes/products';
 
 const app = express(); // создаём сервер
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 
 app.use('/img', express.static(path.join(__dirname, '../public/img')));
 
