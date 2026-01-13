@@ -1,17 +1,17 @@
 import React from 'react';
 import {Table} from 'antd';
 import {useSelector} from 'react-redux';
-import {IAppState, ItemType} from '../../../models';
+import {IAppState, IProductType} from '../../../models';
 import {ColumnsType} from 'antd/es/table';
 
 interface IProps {
-    onItemClick?: (item: ItemType) => void;
+    onProductClick?: (product: IProductType) => void;
 }
 
-const ItemsTable = ({onItemClick}: IProps) => {
-    const items = useSelector((state: IAppState) => state.itemsData.items);
+const ProductsTable = ({onProductClick}: IProps) => {
+    const products = useSelector((state: IAppState) => state.productsData.products);
 
-    const itemColumns: ColumnsType<ItemType> = [
+    const productColumns: ColumnsType<IProductType> = [
         {
             key: 'id',
             title: 'id',
@@ -49,10 +49,10 @@ const ItemsTable = ({onItemClick}: IProps) => {
                 size="middle"
                 onRow={(record) => ({
                     onDoubleClick: () =>  {
-                        onItemClick?.(record)},
+                        onProductClick?.(record)},
                 })}
-                columns={itemColumns}
-                dataSource={items || []}
+                columns={productColumns}
+                dataSource={products || []}
                 pagination={false}
             />
         </div>
@@ -60,4 +60,4 @@ const ItemsTable = ({onItemClick}: IProps) => {
 };
 
 
-export default ItemsTable;
+export default ProductsTable;

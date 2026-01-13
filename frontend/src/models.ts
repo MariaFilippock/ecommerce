@@ -1,16 +1,15 @@
 export interface IAppState {
-    itemsData: ItemsState;
+    productsData: IProductsState;
 }
 
-//модель одного редьюсера
-export interface ItemsState {
-    items: ItemType[];
-    cart: ItemAtCartType[];
+export interface IProductsState {
+    products: IProductType[];
+    cart: ICartProductType[];
     favorites: number[];
     status: boolean;
 }
 
-export interface ItemType {
+export interface IProductType {
     id: number;
     title: string;
     img: string;
@@ -19,10 +18,10 @@ export interface ItemType {
     price: string;
 }
 
-export interface ItemAtCartType {
+export interface ICartProductType {
     id: number;
     count: number;
 }
 
-export type detailedCartItemType = ItemType & {count: number}
+export type detailedCartProductType = IProductType & {count: number}
 

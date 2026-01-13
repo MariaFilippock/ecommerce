@@ -1,4 +1,4 @@
-export interface ItemType {
+export interface IProductType {
     id: number;
     title: string;
     img: string;
@@ -7,7 +7,13 @@ export interface ItemType {
     price: string;
 }
 
-export interface ItemAtCartType {
+export interface IProductAtCartType {
     id: number;
     count: number;
+}
+
+export interface IProductsStateType {
+    products: IProductType[];
+    cart: IProductAtCartType[];
+    favorites: number[];
 }

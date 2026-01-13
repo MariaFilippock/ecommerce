@@ -2,16 +2,16 @@ import React, {useState} from 'react';
 import styles from '../AdminPage.module.scss';
 import {Button} from 'antd';
 import {useAppDispatch} from '../../../store/hooks';
-import {IAppState, ItemType} from '../../../models';
+import {IAppState, IProductType} from '../../../models';
 import {useSelector} from 'react-redux';
-import {postNewItemThunk} from '../../../store/item-thunk';
+import {postNewProductThunk} from '../../../store/product-thunk';
 import ProductForm from '../components/ProductForm';
 
 interface IProps {
     onSuccessAdd: () => void
 }
 
-const defaultItem = {
+const defaultProduct = {
     id: -1,
     title: '',
     img: '',
@@ -20,21 +20,21 @@ const defaultItem = {
     price: ''
 };
 
-const AddItemForm = ({onSuccessAdd}: IProps) => {
+const AddProductForm = ({onSuccessAdd}: IProps) => {
     const dispatch = useAppDispatch();
-    const [item, setItem] = useState<ItemType>(defaultItem as ItemType);
-    const status = useSelector((state: IAppState) => state.itemsData.status);
+    const [product, setProduct] = useState<IProductType>(defaultProduct as IProductType);
+    const status = useSelector((state: IAppState) => state.productsData.status);
 
-    const changeItemDetails = (changes: Partial<ItemType>) => {
-        setItem(state => ({
+    const changeProductDetails = (changes: Partial<IProductType>) => {
+        setProduct(state => ({
             ...state,
             ...changes,
         }));
     }
 
-    const handleAddNewItem = async () => {
-        dispatch(postNewItemThunk(item, onSuccessAdd));
-        setItem(defaultItem);
+    const handleAddNewProduct = async () => {
+        dispatch(postNewProductThunk(product, onSuccessAdd));
+        setProduct(defaultProduct);
     }
 
     return (
@@ -42,8 +42,8 @@ const AddItemForm = ({onSuccessAdd}: IProps) => {
             <h3 className={styles.title}>Добавление нового товара</h3>
 
             <ProductForm
-                item={item}
-                changeItemDetails={changeItemDetails}
+                product={product}
+                changeProductDetails={changeProductDetails}
             />
 
             <div className={styles.buttonsContainer}>
@@ -51,7 +51,7 @@ const AddItemForm = ({onSuccessAdd}: IProps) => {
                     type='primary'
                     loading={status}
                     disabled={status}
-                    onClick={handleAddNewItem}
+                    onClick={handleAddNewProduct}
                 >
                     Добавить
                 </Button>
@@ -60,4 +60,4 @@ const AddItemForm = ({onSuccessAdd}: IProps) => {
     );
 };
 
-export default AddItemForm;
+export default AddProductForm;

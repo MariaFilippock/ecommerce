@@ -1,23 +1,23 @@
 import React, {useState} from 'react';
-import {ItemType} from '../../../models';
+import {IProductType} from '../../../models';
 import {Button} from 'antd';
 import ProductForm from '../components/ProductForm';
 import {useAppDispatch} from '../../../store/hooks';
-import {deleteItemThunk, editItemThunk} from '../../../store/item-thunk';
+import {deleteProductThunk, editProductThunk} from '../../../store/product-thunk';
 import styles from '../AdminPage.module.scss';
 
 interface IProps {
-    item: ItemType,
+    product: IProductType,
     onSuccessDelete: () => void
 }
 
-const EditItemForm = ({item, onSuccessDelete}: IProps) => {
+const EditProductForm = ({product, onSuccessDelete}: IProps) => {
     const dispatch = useAppDispatch();
-    const [editedItem, setEditedItem] = useState(item);
+    const [editedProduct, setEditedProduct] = useState(product);
 
 
-    const changeItemDetails = (changes: Partial<ItemType>) => {
-        setEditedItem(state => ({
+    const changeProductDetails = (changes: Partial<IProductType>) => {
+        setEditedProduct(state => ({
             ...state,
             ...changes
         }));
@@ -27,18 +27,18 @@ const EditItemForm = ({item, onSuccessDelete}: IProps) => {
         <div>
             <h3 className={styles.title}>Редактирование товара</h3>
 
-            <ProductForm item={editedItem} changeItemDetails={changeItemDetails}/>
+            <ProductForm product={editedProduct} changeProductDetails={changeProductDetails}/>
             <div className={styles.buttonsContainer}>
                 <Button
                     type='primary'
-                    onClick={() => dispatch(editItemThunk(editedItem))}
+                    onClick={() => dispatch(editProductThunk(editedProduct))}
                 >
                     Сохранить изменения
                 </Button>
                 <Button
                     type='primary'
-                    disabled={!editedItem}
-                    onClick={() => dispatch(deleteItemThunk(editedItem.id, onSuccessDelete))}
+                    disabled={!editedProduct}
+                    onClick={() => dispatch(deleteProductThunk(editedProduct.id, onSuccessDelete))}
                 >
                     Удалить товар
                 </Button>
@@ -47,4 +47,4 @@ const EditItemForm = ({item, onSuccessDelete}: IProps) => {
     );
 };
 
-export default EditItemForm;
+export default EditProductForm;

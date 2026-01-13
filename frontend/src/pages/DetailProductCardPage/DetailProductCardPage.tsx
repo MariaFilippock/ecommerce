@@ -1,22 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import styles from './styles.module.scss';
 import {useParams} from 'react-router-dom';
-import {ItemType} from '../../models';
+import {IProductType} from '../../models';
 
-const ItemDetailCardPage = () => {
+const DetailProductCardPage = () => {
     const {id} = useParams<{ id: string }>();
-    const [item, setItem] = useState<ItemType | null>(null);
+    const [product, setProduct] = useState<IProductType | null>(null);
 
     useEffect(() => {
         if (id) {
-            fetch(`/api/items/${id}`)
+            fetch(`/api/products/${id}`)
                 .then(res => res.json())
-                .then(data => setItem(data))
+                .then(data => setProduct(data))
                 .catch(err => console.error(err))
         }
     }, [id])
 
-    if (!item) {
+    if (!product) {
         return <div>Товар не найден или загружается…</div>;
     }
 
@@ -24,13 +24,13 @@ const ItemDetailCardPage = () => {
         <div className={styles.detailsContainer}>
 
             <div className={styles.imageContainer}>
-                <img alt={item.title} src={`http://localhost:5001/img/${item.img}`}/>
+                <img alt={product.title} src={`http://localhost:5001/img/${product.img}`}/>
             </div>
             <div className={styles.infoContainer}>
-                <h2>{item.title}</h2>
-                <h2 className={styles.price}>{item.price} $</h2>
+                <h2>{product.title}</h2>
+                <h2 className={styles.price}>{product.price} $</h2>
 
-                <div className={styles.description}>{item.desc}</div>
+                <div className={styles.description}>{product.desc}</div>
 
             </div>
 
@@ -38,4 +38,4 @@ const ItemDetailCardPage = () => {
     );
 };
 
-export default ItemDetailCardPage;
+export default DetailProductCardPage;

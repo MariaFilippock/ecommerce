@@ -1,20 +1,20 @@
 import {AnyAction} from 'redux';
-import {SET_CART, SET_IS_ADDING, SET_ITEMS, TOGGLE_FAVORITE} from '../const';
-import {ItemAtCartType, ItemsState, ItemType} from '../models';
+import {SET_CART, SET_IS_ADDING, SET_PRODUCTS, TOGGLE_FAVORITE} from '../const';
+import {ICartProductType, IProductsState, IProductType} from '../models';
 
-let initialState: ItemsState = {
-    items: [],
+let initialState: IProductsState = {
+    products: [],
     cart: [],
     favorites: [],
     status: false,
 }
 
-export const itemsReducer = (state = initialState, action: AnyAction) => {
+export const productsReducer = (state = initialState, action: AnyAction) => {
     switch (action.type) {
-        case SET_ITEMS: {
+        case SET_PRODUCTS: {
             return {
                 ...state,
-                items: action.items,
+                products: action.products,
             }
         }
         case SET_CART: {
@@ -40,12 +40,12 @@ export const itemsReducer = (state = initialState, action: AnyAction) => {
     }
 }
 
-export const setItemsAC = (items: ItemType[]) => ({
-    type: SET_ITEMS,
-    items
+export const setProductsAC = (products: IProductType[]) => ({
+    type: SET_PRODUCTS,
+    products
 });
 
-export const setCartAC = (cart: ItemAtCartType[]) => ({
+export const setCartAC = (cart: ICartProductType[]) => ({
     type: SET_CART,
     payload: cart
 });

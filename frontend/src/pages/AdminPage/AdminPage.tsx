@@ -1,23 +1,22 @@
 import React, {useState} from 'react';
 import {Button, Tabs, TabsProps} from 'antd';
 import {EAdministrationTab, Text} from '../../const';
-import ItemsTable from './components/ItemsTable';
-import AddItemForm from './components/AddItemForm';
-import {ItemType} from '../../models';
-import EditItemForm from './components/EditItemForm';
+import ProductsTable from './components/ProductsTable';
+import AddProductForm from './components/AddProductForm';
+import {IProductType} from '../../models';
+import EditProductForm from './components/EditProductForm';
 
 const ADD_TAB_KEY = 'ADD_TAB_KEY';
 export type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
 
 const AdminPage = () => {
-    const [activeKey, setActiveKey] = useState<string>(EAdministrationTab.ITEMS_TABLE);
+    const [activeKey, setActiveKey] = useState<string>(EAdministrationTab.PRODUCTS_TABLE);
     const [tabs, setTabs] = useState<NonNullable<TabsProps['items']>>([]);
 
     /**
      * Обработчик клика на "добавить новый товар" открытия новый таба
      */
-
-    const addNewItem = () => {
+    const addNewProduct = () => {
         const exists = tabs.some(tab => tab.key === ADD_TAB_KEY);
 
         if (exists) {
@@ -29,7 +28,7 @@ const AdminPage = () => {
             {
                 label: Text.Administration.addition,
                 key: ADD_TAB_KEY,
-                children: (<AddItemForm onSuccessAdd={() => remove(ADD_TAB_KEY)} />),
+                children: (<AddProductForm onSuccessAdd={() => remove(ADD_TAB_KEY)}/>),
                 closable: true,
             },
         ]);
@@ -40,8 +39,8 @@ const AdminPage = () => {
     /**
      * Обработчик нажатия на строку таблицы.
      */
-    const editItemTab = (item: ItemType) => {
-        const tabKey = `edit-${item.id}`;
+    const editProductTab = (product: IProductType) => {
+        const tabKey = `edit-${product.id}`;
 
         const exists = tabs.some(tab => tab.key === tabKey);
 
@@ -52,10 +51,10 @@ const AdminPage = () => {
         setTabs(state => [
             ...state,
             {
-                label: `${item.title} (редактирование)`,
+                label: `${product.title} (редактирование)`,
                 key: tabKey,
                 closable: true,
-                children: (<EditItemForm onSuccessDelete={() => remove(tabKey)} item={item}/>)
+                children: (<EditProductForm onSuccessDelete={() => remove(tabKey)} product={product}/>)
             }
         ]);
 
@@ -70,16 +69,16 @@ const AdminPage = () => {
             return;
         }
         const targetIndex = tabs.findIndex((tab) => tab.key === targetKey);
-        const newItems = tabs.filter((tab) => tab.key !== targetKey);
+        const newProducts = tabs.filter((tab) => tab.key !== targetKey);
 
-        if (newItems.length && targetKey === activeKey) {
+        if (newProducts.length && targetKey === activeKey) {
             const newActiveKey =
-                newItems[targetIndex === newItems.length ? targetIndex - 1 : targetIndex].key;
+                newProducts[targetIndex === newProducts.length ? targetIndex - 1 : targetIndex].key;
             setActiveKey(newActiveKey);
         }
 
-        setTabs(newItems);
-        setActiveKey(EAdministrationTab.ITEMS_TABLE);
+        setTabs(newProducts);
+        setActiveKey(EAdministrationTab.PRODUCTS_TABLE);
     };
 
     /**
@@ -94,15 +93,15 @@ const AdminPage = () => {
             type="editable-card"
             activeKey={activeKey}
             items={[{
-                key: EAdministrationTab.ITEMS_TABLE,
-                label: Text.Administration.itemsTable,
+                key: EAdministrationTab.PRODUCTS_TABLE,
+                label: Text.Administration.productsTable,
                 children: (
                     <>
-                        <Button type='primary' onClick={addNewItem} style={{marginBottom: '20px'}}>
+                        <Button type='primary' onClick={addNewProduct} style={{marginBottom: '20px'}}>
                             Добавить новый товар
                         </Button>
 
-                        <ItemsTable onItemClick={editItemTab}/>
+                        <ProductsTable onProductClick={editProductTab}/>
                     </>
                 ),
             }, ...tabs]}

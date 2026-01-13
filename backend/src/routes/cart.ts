@@ -1,21 +1,19 @@
 import {Router} from 'express';
-import itemData from '../data/data.json';
-import {ItemAtCartType, ItemType} from '../models';
+import _productsData from '../data/data.json';
+import {IProductsStateType} from '../models';
 
-const items: ItemType[] = itemData.items;
-let cart: ItemAtCartType[] = itemData.cart;
+const productsData = _productsData as IProductsStateType;
 
 const cartRouter = Router();
 
-
 cartRouter.get('/cart', (_req, res) => {
     try {
-        const detailedCart = cart.map((cartItem) => {
-            const product = items.find(item => item.id === cartItem.id);
+        const detailedCart = productsData.cart.map((cartProduct) => {
+            const product = productsData.products.find(product => product.id === cartProduct.id);
 
             return {
                 ...product,
-                count: cartItem.count
+                count: cartProduct.count
             }
         });
 
@@ -30,22 +28,22 @@ cartRouter.post('/cart', (req, res) => {
         const {id, count = 1} = req.body;
 
         if (!id) {
-            return res.status(400).json({message: 'cartItemId is required!'});
+            return res.status(400).json({message: 'Id is required!'});
         }
 
-        const existingItem = cart.find((cartItem) => cartItem.id === id);
+        const existingProduct = productsData.cart.find((cartProduct) => cartProduct.id === id);
 
-        if (existingItem) {
-            existingItem.count += count;
+        if (existingProduct) {
+            existingProduct.count += count;
 
-            if (existingItem.count <= 0) {
-                cart = cart.filter(item => item.id !== id);
+            if (existingProduct.count <= 0) {
+                productsData.cart = productsData.cart.filter(product => product.id !== id);
             }
         } else if (count > 0) {
-            cart.push({id, count});
+            productsData.cart.push({id, count});
         }
 
-        res.status(200).json(cart);
+        res.status(200).json(productsData.cart);
     } catch (e) {
         res.status(500).json(e);
     }

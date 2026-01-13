@@ -1,11 +1,11 @@
-.item {
+.product {
   width: 250px;
   margin-bottom: 50px;
   overflow: hidden;
   position: relative;
 }
 
-.itemTitle {
+.productTitle {
   margin: 10px 2px;
   color: #333;
 }
@@ -15,13 +15,13 @@ img {
   display: block;
 }
 
-.itemImg {
+.productImg {
   position: relative;
   overflow: hidden;
   cursor: pointer;
 }
 
-.itemInfo {
+.productInfo {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -36,7 +36,7 @@ img {
   align-items: center;
 }
 
-.itemQuantitySelector {
+.productQuantitySelector {
   display: flex;
   flex-direction: row;
   align-items: center;

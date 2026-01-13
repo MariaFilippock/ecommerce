@@ -42,7 +42,7 @@ h2 {
   margin-bottom: 10px;
 }
 
-.toItems {
+.toProducts {
   font-family: inherit;
   margin-top: 8px;
   min-width: 300px;
@@ -58,7 +58,7 @@ h2 {
   flex-direction: row;
 }
 
-.items {
+.products {
   display: flex;
   flex-direction: row;
   justify-items: flex-start;
@@ -95,13 +95,13 @@ h2 {
   color: #333;
 }
 
-.itemTitle {
+.productTitle {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.itemInfo {
+.productInfo {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
