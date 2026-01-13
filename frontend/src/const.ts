@@ -1,12 +1,12 @@
 import {IStringDictionaryItem} from './helpers';
 
-export const SET_ITEMS = 'SET_ITEMS'; // для списка товаров
+export const SET_PRODUCTS = 'SET_PRODUCTS'; // для списка товаров
 export const SET_IS_ADDING = 'SET_IS_ADDING'; //статус добавления товара
 export const TOGGLE_FAVORITE = 'TOGGLE_FAVORITE'; // добавляем в/убираем из избранное/го
 export const SET_CART = 'SET_CART';
 
 export const ROUTES = {
-    ITEMS: '/items',
+    PRODUCTS: '/products',
 };
 
 /** Название атрибута, который добавляем к элементам для скролла к ним */
@@ -24,7 +24,7 @@ export enum ECategory {
     storage = 'storage',
 }
 
-export const ITEM_CATEGORY_DICT: IStringDictionaryItem[] = [
+export const PRODUCT_CATEGORY_DICT: IStringDictionaryItem[] = [
     {
         id: ECategory.storage,
         label: 'Хранение',
@@ -41,14 +41,12 @@ export const ITEM_CATEGORY_DICT: IStringDictionaryItem[] = [
 
 //типы табов для модуля Администрирование
 export enum EAdministrationTab {
-    ITEMS_TABLE = 'ITEMS_TABLE',
-    ADDITION = 'ADDITION',
-    EDITING = 'EDITING',
+    PRODUCTS_TABLE = 'PRODUCTS_TABLE',
 }
 
 export const Text = {
     Administration: {
-        itemsTable: 'Список товаров',
+        productsTable: 'Список товаров',
         addition: 'Добавление товара',
         editing: 'Редактирование товара'
 

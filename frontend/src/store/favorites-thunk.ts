@@ -1,5 +1,5 @@
 import {AppThunk} from '../store/types';
-import {setFavoritesAC} from '../store/items-reducer';
+import {setFavoritesAC} from '../store/products-reducer';
 
 
 export const setFavoritesThunk = (): AppThunk => async (dispatch) => {
@@ -22,7 +22,7 @@ export const toggleFavoritesThunk = (id: number): AppThunk => async (dispatch) =
         });
 
         if (!res.ok) {
-            throw new Error('Failed to toggle item at favorites');
+            throw new Error('Failed to toggle product at favorites');
         }
 
         const favorites = await res.json();

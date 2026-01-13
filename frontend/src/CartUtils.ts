@@ -1,19 +1,19 @@
-import {detailedCartItemType, ItemAtCartType} from './models';
+import {detailedCartProductType, ICartProductType} from './models';
 
 export class UtilsComponent {
-    cartItemsQuantity(cart: ItemAtCartType[]) {
-        return cart.reduce((quantity, item) => {
-            return quantity + item.count
+    cartProductsQuantity(cart: ICartProductType[]) {
+        return cart.reduce((quantity, product) => {
+            return quantity + product.count
         }, 0);
     }
 
-    cartItemsTotalCost(cart: detailedCartItemType[]) {
-        return cart.reduce((sum, item) => {
-            return sum + (item.count * Number(item.price))
+    cartProductsTotalCost(cart: detailedCartProductType[]) {
+        return cart.reduce((sum, product) => {
+            return sum + (product.count * Number(product.price))
         }, 0).toFixed(2);
     }
 
-    totalCostPerItem(cart: detailedCartItemType) {
+    totalCostPerProduct(cart: detailedCartProductType) {
         return Number(cart.price) * cart.count;
     }
 }

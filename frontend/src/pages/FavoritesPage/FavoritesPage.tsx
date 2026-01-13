@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useSelector} from 'react-redux';
-import {IAppState, ItemType} from '../../models';
-import Item from '../../components/Item/Item';
+import {IAppState, IProductType} from '../../models';
+import Product from '../../components/Product/Product';
 import {ROUTES} from '../../const';
 import {useNavigate} from 'react-router-dom';
 import {useAppDispatch} from '../../store/hooks';
@@ -12,27 +12,27 @@ const FavoritesPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const selectFavoritesItems = (state: IAppState) =>
-        state.itemsData.favorites
+    const selectFavoritesProducts = (state: IAppState) =>
+        state.productsData.favorites
             .map((favId) =>
-                state.itemsData.items.find((item) => item.id === favId)
-            ).filter((item): item is ItemType => item !== undefined);
+                state.productsData.products.find((product) => product.id === favId)
+            ).filter((product): product is IProductType => product !== undefined);
 
-    const favoritesList = useSelector(selectFavoritesItems);
+    const favoritesList = useSelector(selectFavoritesProducts);
 
     useEffect(() => {
         dispatch(setFavoritesThunk());
     }, [dispatch]);
 
-    const handleItemDetailCardClick = (id: number) => {
-        navigate(`${ROUTES.ITEMS}/${id}`);
+    const handleDetailProductCardClick = (id: number) => {
+        navigate(`${ROUTES.PRODUCTS}/${id}`);
     };
 
     return (
         <main>
             {favoritesList.length > 0 ? (
-                favoritesList.map((favItem) => (
-                    <Item key={favItem.id} item={favItem} onCardClick={handleItemDetailCardClick}/>
+                favoritesList.map((favProduct) => (
+                    <Product key={favProduct.id} product={favProduct} onCardClick={handleDetailProductCardClick}/>
                 ))
             ) : (
                 <div>Пусто</div>

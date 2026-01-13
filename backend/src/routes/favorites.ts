@@ -1,13 +1,14 @@
 import {Router} from 'express';
-import itemsData from '../data/data.json';
+import _productsData from '../data/data.json';
+import {IProductsStateType} from '../models';
 
-let favorites: number[] = itemsData.favorites;
+const productsData = _productsData as IProductsStateType;
 
 const favoritesRouter = Router();
 
 favoritesRouter.get('/favorites/', (_req, res) => {
     try {
-        res.json(favorites);
+        res.json(productsData.favorites);
     } catch (e) {
         res.status(500).json(e);
     }
@@ -21,15 +22,15 @@ favoritesRouter.post('/favorites/', (req, res) => {
             return res.status(400).json({message: 'Id is required!'});
         }
 
-        const exists = favorites.includes(id);
+        const exists = productsData.favorites.includes(id);
 
         if (exists) {
-            favorites = favorites.filter(favId => favId !== id);
+            productsData.favorites = productsData.favorites.filter(favId => favId !== id);
         } else {
-            favorites.push(id);
+            productsData.favorites.push(id);
         }
 
-        res.status(200).json(favorites);
+        res.status(200).json(productsData.favorites);
     } catch (e) {
         res.status(500).json(e);
     }

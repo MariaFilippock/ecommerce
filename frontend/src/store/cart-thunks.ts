@@ -1,15 +1,15 @@
-import {setCartAC} from '../store/items-reducer';
+import {setCartAC} from '../store/products-reducer';
 import {AppThunk} from '../store/types';
 
-export const changeItemCountThunk = (itemId: number, delta: number): AppThunk => async (dispatch) => {
+export const changeProductCountThunk = (productId: number, delta: number): AppThunk => async (dispatch) => {
     const res = await fetch('/api/cart', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({id: itemId, count: delta})
+        body: JSON.stringify({id: productId, count: delta})
     });
 
     if (!res.ok) {
-        throw new Error('Failed to add item to cart');
+        throw new Error('Failed to add product to cart');
     }
 
     const cart = await res.json();

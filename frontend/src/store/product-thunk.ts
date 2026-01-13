@@ -1,30 +1,30 @@
 import {AppThunk} from '../store/types';
-import {setIsAddingAC, setItemsAC} from '../store/items-reducer';
-import {ItemType} from '../models';
+import {setIsAddingAC, setProductsAC} from '../store/products-reducer';
+import {IProductType} from '../models';
 import {message} from 'antd';
 
 
 //получение списка товаров
-export const setItemsThunk = (): AppThunk => async (dispatch) => {
+export const setProductsThunk = (): AppThunk => async (dispatch) => {
     try {
-        const res = await fetch('/api/items');
-        const items = await res.json();
+        const res = await fetch('/api/products');
+        const products = await res.json();
 
-        dispatch(setItemsAC(items));
+        dispatch(setProductsAC(products));
     } catch (e) {
-        console.error('setItemsThunk error', e);
+        console.error('setProductsThunk error', e);
     }
 }
 
 //добавление нового товара в список товаров в админке
-export const postNewItemThunk = (item: ItemType, onSuccessAdd: () => void): AppThunk => async (dispatch) => {
+export const postNewProductThunk = (product: IProductType, onSuccessAdd: () => void): AppThunk => async (dispatch) => {
     try {
         dispatch(setIsAddingAC(true));
 
-        const res = await fetch('/api/items/create', {
+        const res = await fetch('/api/products/create', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(item)
+            body: JSON.stringify(product)
         });
 
         if (!res.ok) {
@@ -32,14 +32,14 @@ export const postNewItemThunk = (item: ItemType, onSuccessAdd: () => void): AppT
             return;
         }
 
-        const itemsRes = await fetch('/api/items');
-        const items = await itemsRes.json();
+        const productsRes = await fetch('/api/products');
+        const products = await productsRes.json();
 
-        dispatch(setItemsAC(items));
+        dispatch(setProductsAC(products));
         message.success('Товар успешно добавлен!');
         onSuccessAdd();
     } catch (e) {
-        console.error('postNewItemThunk', e);
+        console.error('postNewProductThunk', e);
         message.error('Ошибка при добавлении товара!');
     } finally {
         dispatch(setIsAddingAC(false));
@@ -47,11 +47,11 @@ export const postNewItemThunk = (item: ItemType, onSuccessAdd: () => void): AppT
 }
 
 //удаление товара из списка товаров в админке
-export const deleteItemThunk = (itemId: string | number, onSuccessDelete: () => void): AppThunk => async (dispatch) => {
+export const deleteProductThunk = (productId: string | number, onSuccessDelete: () => void): AppThunk => async (dispatch) => {
     try {
         dispatch(setIsAddingAC(true));
 
-        const res = await fetch(`/api/items/${itemId}`, {
+        const res = await fetch(`/api/products/${productId}`, {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'},
         })
@@ -61,9 +61,9 @@ export const deleteItemThunk = (itemId: string | number, onSuccessDelete: () => 
             return;
         }
 
-        const items = await res.json();
+        const products = await res.json();
 
-        dispatch(setItemsAC(items));
+        dispatch(setProductsAC(products));
         message.success('Товар успешно удален!');
         onSuccessDelete();
     } catch (e) {
@@ -74,12 +74,12 @@ export const deleteItemThunk = (itemId: string | number, onSuccessDelete: () => 
 }
 
 //редактирование товара
-export const editItemThunk = (item: ItemType): AppThunk => async (dispatch) => {
+export const editProductThunk = (product: IProductType): AppThunk => async (dispatch) => {
     try {
-        const res = await fetch('/api/items/update', {
+        const res = await fetch('/api/products/update', {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(item)
+            body: JSON.stringify(product)
         })
 
         if (!res.ok) {
@@ -87,9 +87,9 @@ export const editItemThunk = (item: ItemType): AppThunk => async (dispatch) => {
             return;
         }
 
-        const items = await res.json();
+        const products = await res.json();
 
-        dispatch(setItemsAC(items));
+        dispatch(setProductsAC(products));
         message.success('Товар успешно отредактирован!');
     } catch (e) {
         message.error('Ошибка при редактировании товара!');
