@@ -1,11 +1,12 @@
 import {AnyAction} from 'redux';
-import {SET_CART, SET_ITEMS, TOGGLE_FAVORITE} from '../const';
+import {SET_CART, SET_IS_ADDING, SET_ITEMS, TOGGLE_FAVORITE} from '../const';
 import {ItemAtCartType, ItemsState, ItemType} from '../models';
 
 let initialState: ItemsState = {
     items: [],
     cart: [],
     favorites: [],
+    status: false,
 }
 
 export const itemsReducer = (state = initialState, action: AnyAction) => {
@@ -27,14 +28,12 @@ export const itemsReducer = (state = initialState, action: AnyAction) => {
                 ...state,
                 favorites: action.payload,
             }
-            // const id = action.payload;
-            // const isFavorite = state.favorites.find(idItem => idItem === id);
-            // return {
-            //     ...state,
-            //     favorites: isFavorite
-            //         ? state.favorites.filter(i => i !== id)
-            //         : [...state.favorites, id],
-            // }
+        }
+        case SET_IS_ADDING: {
+            return {
+                ...state,
+                status: action.status,
+            }
         }
         default:
             return state;
@@ -49,9 +48,14 @@ export const setItemsAC = (items: ItemType[]) => ({
 export const setCartAC = (cart: ItemAtCartType[]) => ({
     type: SET_CART,
     payload: cart
-})
+});
 
 export const setFavoritesAC = (favorites: number[]) => ({
     type: TOGGLE_FAVORITE,
     payload: favorites
+});
+
+export const setIsAddingAC = (status: boolean) => ({
+    type: SET_IS_ADDING,
+    status
 });
