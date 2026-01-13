@@ -7,6 +7,7 @@ export interface ItemsState {
     items: ItemType[];
     cart: ItemAtCartType[];
     favorites: number[];
+    status: boolean;
 }
 
 export interface ItemType {
@@ -24,3 +25,4 @@ export interface ItemAtCartType {
 }
 
 export type detailedCartItemType = ItemType & {count: number}
+

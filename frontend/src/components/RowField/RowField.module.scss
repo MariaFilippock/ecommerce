@@ -1,0 +1,32 @@
+.errorContainer {
+  min-height: 24px;
+  color: rgb(255, 0, 0);
+}
+
+.fieldLabel {
+  flex: 1;
+  text-align: end;
+  margin-top: 4px;
+}
+
+.requiredMark:before {
+  display: inline-block;
+  margin-right: 4px;
+  color: rgb(255, 77, 79);
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: '*';
+}
+
+.helpIconWrapper {
+  margin-bottom: auto;
+  padding-top: 6px;
+}
+
+.helpIcon {
+  color: rgb(140, 140, 140);
+  cursor: help;
+  margin-inline-start: 4px;
+  padding-top: 4px;
+}

@@ -9,6 +9,7 @@ const Profile = lazy(() => import('./pages/ProfilePage/ProfilePage'));
 const FavoritesPage = lazy(() => import('./pages/FavoritesPage/FavoritesPage'));
 const CartPage = lazy(() => import('./pages/CartPage/CartPage'));
 const ItemDetailCardPage = lazy(() => import('./pages/ItemDetailCardPage/ItemDetailCardPage'));
+const AdminPage = lazy(() => import('./pages/AdminPage/AdminPage'));
 
 const App = () => {
     return (
@@ -21,6 +22,7 @@ const App = () => {
                 <Route path='/favorites' element={<FavoritesPage/>}/>
                 <Route path='/cart' element={<CartPage/>}/>
                 <Route path='/items/:id' element={<ItemDetailCardPage/>}/>
+                <Route path='/admin' element={<AdminPage/>}/>
             </Routes>
             <Footer/>
         </div>
