@@ -31,11 +31,11 @@ app.use(express.static(frontendBuildPath));
 
 // SPA fallback — любые другие маршруты → index.html
 app.use((req, res, next) => {
-  if (!req.path.startsWith('/api') && !req.path.startsWith('/img')) {
-    res.sendFile(path.join(frontendBuildPath, 'index.html'));
-  } else {
-    next();
-  }
+    if (!req.path.startsWith('/api') && !req.path.startsWith('/img')) {
+        res.sendFile(path.join(frontendBuildPath, 'index.html'));
+    } else {
+        next();
+    }
 });
 
 app.listen(PORT, () => {

@@ -1,0 +1,11 @@
+{
+  "name": "fullstack-app",
+  "version": "1.0.0",
+  "scripts": {
+    "install:all": "npm install --prefix frontend && npm install --prefix backend",
+    "build:frontend": "npm run build --prefix frontend",
+    "build:backend": "tsc --build backend/tsconfig.json",
+    "build": "npm run build:backend && npm run build:frontend",
+    "start": "node backend/dist/index.js"
+  }
+}
