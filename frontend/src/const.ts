@@ -1,6 +1,6 @@
 import {IStringDictionaryItem} from './helpers';
 
-export const API = process.env.REACT_APP_API_URL;
+export const API_HOST = process.env.REACT_APP_API_URL;
 
 export const SET_PRODUCTS = 'SET_PRODUCTS'; // для списка товаров
 export const SET_IS_ADDING = 'SET_IS_ADDING'; //статус добавления товара

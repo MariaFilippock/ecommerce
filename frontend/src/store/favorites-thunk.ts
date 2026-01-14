@@ -1,11 +1,11 @@
 import {AppThunk} from '../store/types';
 import {setFavoritesAC} from '../store/products-reducer';
-import {API} from '../const';
+import {API_HOST} from '../const';
 
 
 export const setFavoritesThunk = (): AppThunk => async (dispatch) => {
     try {
-        const res = await fetch(`${API}/api/favorites`);
+        const res = await fetch(`${API_HOST}/api/favorites`);
         const data = await res.json();
 
         dispatch(setFavoritesAC(data));
@@ -16,7 +16,7 @@ export const setFavoritesThunk = (): AppThunk => async (dispatch) => {
 
 export const toggleFavoritesThunk = (id: number): AppThunk => async (dispatch) => {
     try {
-        const res = await fetch(`${API}/api/favorites`, {
+        const res = await fetch(`${API_HOST}/api/favorites`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({id}),
