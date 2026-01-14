@@ -30,7 +30,7 @@ const frontendBuildPath = path.join(__dirname, '../frontend/build');
 app.use(express.static(frontendBuildPath));
 
 // SPA fallback — любые другие маршруты → index.html
-app.get('*', (req, res) => {
+app.get('/:any(.*)', (req, res) => {
     res.sendFile(path.join(frontendBuildPath, 'index.html'));
 });
 
