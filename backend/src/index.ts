@@ -26,14 +26,17 @@ app.get('/health', (req, res) => {
 });
 
 // Статика фронтенда
-const frontendBuildPath = path.join(__dirname, '../frontend/build');
+const frontendBuildPath = path.join(__dirname, '../../frontend/build');
 app.use(express.static(frontendBuildPath));
 
 // SPA fallback — любые другие маршруты → index.html
-app.get('/:any(.*)', (req, res) => {
+app.use((req, res, next) => {
+  if (!req.path.startsWith('/api') && !req.path.startsWith('/img')) {
     res.sendFile(path.join(frontendBuildPath, 'index.html'));
+  } else {
+    next();
+  }
 });
-
 
 app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
