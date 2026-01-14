@@ -7,9 +7,13 @@ import productsRouter from './routes/products';
 const app = express(); // создаём сервер
 const PORT = process.env.PORT || 5001;
 
-app.use('/img', express.static(path.join(__dirname, '../public/img')));
-
 app.use(express.json()); //подключает middleware для разбора JSON в теле запроса, учим сервер понимать JSON
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', uptime: process.uptime() });
+});
+
+// app.use('/img', express.static(path.join(__dirname, '../public/img')));
 
 app.use('/api', productsRouter);
 app.use('/api', cartRouter);
