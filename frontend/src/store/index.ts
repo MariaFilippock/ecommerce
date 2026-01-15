@@ -2,8 +2,6 @@ import {applyMiddleware, combineReducers, createStore} from 'redux';
 import {productsReducer} from '../store/products-reducer';
 import {thunk} from 'redux-thunk';
 
-
-
 let reducers = combineReducers({
     productsData: productsReducer,
 });
@@ -21,11 +19,12 @@ let reducers = combineReducers({
 //     }
 // };
 
-// export type RootState = ReturnType<typeof reducers>;
-
 // const persistedState = initState();
 
 export const store = createStore(reducers, applyMiddleware(thunk));
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 // store.subscribe(() => {
 //     try {
@@ -35,4 +34,3 @@ export const store = createStore(reducers, applyMiddleware(thunk));
 //         console.error('Ошибка сохранения состояние в localStorage', err)
 //     }
 // });
-
