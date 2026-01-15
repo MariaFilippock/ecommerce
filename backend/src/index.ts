@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5001;
 
 
 app.use(cors({
-    origin: "https://ecommerce-front-3tbu.onrender.com"
+    origin: "*"
 }));
 
 app.use(express.json()); //подключает middleware для разбора JSON в теле запроса, учим сервер понимать JSON
