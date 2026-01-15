@@ -6,6 +6,7 @@ import styles from './styles.module.scss';
 import {changeProductCountThunk} from '../../store/cart-thunks';
 import {useAppDispatch} from '../../store/hooks';
 import {toggleFavoritesThunk} from '../../store/favorites-thunk';
+import {Carousel} from 'antd';
 
 interface IProps {
     product: IProductType;
@@ -29,9 +30,12 @@ const Product = ({product, onCardClick}: IProps) => {
         <div className={styles.product}>
             <div className={styles.productImg}>
                 <div onClick={() => onCardClick(product.id)}>
-                    {product.img.map((url, index) =>
-                        <img key={index} alt={`${product.title}-${index}`} src={url}/>
-                    )}
+                    <Carousel arrows infinite={false}>
+                        {product.img.map((url, index) =>
+                            <img key={index} alt={`${product.title}-${index}`} src={url}/>
+                        )}
+                    </Carousel>
+
                 </div>
                 <div className={styles.addCart} onClick={handleAddProductAtCart}>
                     Добавить в корзину
