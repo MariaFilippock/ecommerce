@@ -18,10 +18,6 @@ const Product = ({product, onCardClick}: IProps) => {
     const isFavorite = favorites.some((favoriteId) => favoriteId === product.id);
     const dispatch = useAppDispatch();
 
-    console.log("PRODUCT DATA:", product);
-    console.log("TYPE OF IMG:", typeof product.img);
-    console.log("IMG VALUE:", product.img);
-
     const handleAddProductAtCart = () => {
         dispatch(changeProductCountThunk(product.id, +1));
     };
@@ -35,7 +31,7 @@ const Product = ({product, onCardClick}: IProps) => {
             <div className={styles.productImg}>
                 <div onClick={() => onCardClick(product.id)}>
                     <Carousel arrows infinite={false}>
-                        {product.img.map((url, index) =>
+                        {product.img?.map((url, index) =>
                             <img key={index} alt={`${product.title}-${index}`} src={url}/>
                         )}
                     </Carousel>

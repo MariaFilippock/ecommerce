@@ -45,7 +45,7 @@ const CartProduct = ({product}: IProps) => {
         <div className={styles.product}>
             <div className={styles.productImg} onClick={handleDetailProductCardClick}>
                 <Carousel arrows infinite={false}>
-                    {product.img.map((url, index) =>
+                    {product.img?.map((url, index) =>
                         <div>
                             <h3 style={contentStyle}>
                                 <img alt={`${product.title}-${index}`} src={url}/>
