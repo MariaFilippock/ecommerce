@@ -14,7 +14,7 @@ export const productsReducer = (state = initialState, action: AnyAction) => {
         case SET_PRODUCTS: {
             return {
                 ...state,
-                products: action.products,
+                products: action.products as IProductType[],
             }
         }
         case SET_CART: {

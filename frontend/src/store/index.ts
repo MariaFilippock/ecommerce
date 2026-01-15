@@ -1,11 +1,11 @@
-import {applyMiddleware, combineReducers, createStore} from 'redux';
+// import {combineReducers} from 'redux';
 import {productsReducer} from '../store/products-reducer';
-import {thunk} from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
 
-let reducers = combineReducers({
-    productsData: productsReducer,
-});
 
+// let reducers = combineReducers({
+//     productsData: productsReducer,
+// });
 // const initState = () => {
 //     try {
 //         const lsState = localStorage.getItem('ecommerce');
@@ -21,7 +21,11 @@ let reducers = combineReducers({
 
 // const persistedState = initState();
 
-export const store = createStore(reducers, applyMiddleware(thunk));
+export const store = configureStore({
+  reducer: {
+    productsData: productsReducer
+  }
+});
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

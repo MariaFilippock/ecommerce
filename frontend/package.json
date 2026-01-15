@@ -50,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@reduxjs/toolkit": "^2.11.2",
     "@types/lodash": "^4.17.22"
   }
 }
