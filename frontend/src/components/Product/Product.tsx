@@ -18,6 +18,10 @@ const Product = ({product, onCardClick}: IProps) => {
     const isFavorite = favorites.some((favoriteId) => favoriteId === product.id);
     const dispatch = useAppDispatch();
 
+    console.log("PRODUCT DATA:", product);
+    console.log("TYPE OF IMG:", typeof product.img);
+    console.log("IMG VALUE:", product.img);
+
     const handleAddProductAtCart = () => {
         dispatch(changeProductCountThunk(product.id, +1));
     };
