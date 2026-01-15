@@ -21,7 +21,7 @@ let reducers = combineReducers({
 //     }
 // };
 
-export type RootState = ReturnType<typeof reducers>;
+// export type RootState = ReturnType<typeof reducers>;
 
 // const persistedState = initState();
 
