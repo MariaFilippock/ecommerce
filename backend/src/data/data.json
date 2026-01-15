@@ -36,7 +36,10 @@
     {
       "id": 4,
       "title": "Деревянный стеллаж",
-      "img": "storage-unit.jpeg",
+      "img": [
+        "https://storage.yandexcloud.net/ecommerce-filippova/storage-unit.jpeg",
+        "https://storage.yandexcloud.net/ecommerce-filippova/storage-unit-2.jpeg"
+      ],
       "desc": "Деревянный стеллаж с двумя полками и выдвижным ящиком.\nВ связи с особенностями материалов цвет и внешний вид могут незначительно отличаться.",
       "category": "storage",
       "price": "399.99"
