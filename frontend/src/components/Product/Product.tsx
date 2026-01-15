@@ -28,7 +28,11 @@ const Product = ({product, onCardClick}: IProps) => {
     return (
         <div className={styles.product}>
             <div className={styles.productImg}>
-                <img alt={product.title} src={`/img/${product.img}`} onClick={() => onCardClick(product.id)}/>
+                <div onClick={() => onCardClick(product.id)}>
+                    {product.img.map((url, index) =>
+                        <img key={index} alt={`${product.title}-${index}`} src={url}/>
+                    )}
+                </div>
                 <div className={styles.addCart} onClick={handleAddProductAtCart}>
                     Добавить в корзину
                 </div>

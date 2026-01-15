@@ -15,8 +15,6 @@ app.use(cors({
 
 app.use(express.json()); //подключает middleware для разбора JSON в теле запроса, учим сервер понимать JSON
 
-app.use('/img', express.static(path.join(__dirname, '../public/img')));
-
 app.use('/api', productsRouter);
 app.use('/api', cartRouter);
 app.use('/api', favoritesRouter);

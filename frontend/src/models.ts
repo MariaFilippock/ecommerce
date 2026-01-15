@@ -12,7 +12,7 @@ export interface IProductsState {
 export interface IProductType {
     id: number;
     title: string;
-    img: string;
+    img: string[];
     desc: string;
     category: string;
     price: string;

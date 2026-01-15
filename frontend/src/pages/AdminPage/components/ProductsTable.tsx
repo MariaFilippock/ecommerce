@@ -40,6 +40,11 @@ const ProductsTable = ({onProductClick}: IProps) => {
             title: 'Цена товара',
             dataIndex: 'price'
         },
+        {
+            key: 'img',
+            title: 'Изображение',
+            dataIndex: 'img'
+        }
     ];
 
     return (
@@ -48,8 +53,9 @@ const ProductsTable = ({onProductClick}: IProps) => {
                 rowKey="id"
                 size="middle"
                 onRow={(record) => ({
-                    onDoubleClick: () =>  {
-                        onProductClick?.(record)},
+                    onDoubleClick: () => {
+                        onProductClick?.(record)
+                    },
                 })}
                 columns={productColumns}
                 dataSource={products || []}

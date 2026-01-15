@@ -17,7 +17,7 @@ const AdminPage = () => {
      * Обработчик клика на "добавить новый товар" открытия новый таба
      */
     const addNewProduct = () => {
-        const exists = tabs.some(tab => tab.key === ADD_TAB_KEY);
+        const exists = tabs?.some(tab => tab.key === ADD_TAB_KEY);
 
         if (exists) {
             return setActiveKey(ADD_TAB_KEY);
@@ -42,7 +42,7 @@ const AdminPage = () => {
     const editProductTab = (product: IProductType) => {
         const tabKey = `edit-${product.id}`;
 
-        const exists = tabs.some(tab => tab.key === tabKey);
+        const exists = tabs?.some(tab => tab.key === tabKey);
 
         if (exists) {
             return setActiveKey(tabKey);
