@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './styles.module.scss';
 import {ShoppingOutlined} from '@ant-design/icons';
 import CartProduct from '../../components/CartProduct/CartProduct';
@@ -13,10 +13,16 @@ import {detailedCartProductType, IAppState} from '../../models';
 const CartPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const cartProducts = useSelector((state: IAppState) =>
-        state.productsData.cart
+    const [loading, setLoading] = useState(true);
+
+
+    const cartProducts = useSelector((state: IAppState) => {
+        const {cart, products} = state.productsData;
+        if (!cart || !products.length) return [];
+
+        return cart
             .map((cartProduct) => {
-                const product = state.productsData.products.find(product => product.id === cartProduct.id);
+                const product = products.find(product => product.id === cartProduct.id);
 
                 if (!product) return null;
 
@@ -26,10 +32,15 @@ const CartPage = () => {
                 }
             })
             .filter((i): i is detailedCartProductType => i !== null)
-    );
+    });
 
     useEffect(() => {
-        dispatch(setCartThunk());
+        const loadCart = async () => {
+            setLoading(true);
+            await dispatch(setCartThunk() as any); // кастуем в any, чтобы TS не ругался
+            setLoading(false);
+        };
+        loadCart();
     }, [dispatch]);
 
     const handleProductsClick = () => {
@@ -38,6 +49,8 @@ const CartPage = () => {
 
     const quantity = Utils.cartProductsQuantity(cartProducts);
     const totalCost = Utils.cartProductsTotalCost(cartProducts);
+
+    if (loading) return <p>Загрузка корзины...</p>;
 
     return (
         <div className={styles.cartContent}>
