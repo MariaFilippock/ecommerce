@@ -24,10 +24,13 @@ const DetailProductCardPage = () => {
         <div className={styles.detailsContainer}>
 
             <div className={styles.imageContainer}>
-                <img alt={product.title} src={`http://localhost:5001/img/${product.img}`}/>
+                {product?.img.map((url) =>
+                    <img alt={product?.title} src={url}/>
+                )}
+
             </div>
             <div className={styles.infoContainer}>
-                <h2>{product.title}</h2>
+                <h2>{product?.title}</h2>
                 <h2 className={styles.price}>{product.price} $</h2>
 
                 <div className={styles.description}>{product.desc}</div>

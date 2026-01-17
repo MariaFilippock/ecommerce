@@ -14,7 +14,7 @@ interface IProps {
 const defaultProduct = {
     id: -1,
     title: '',
-    img: '',
+    img: [],
     desc: '',
     category: '',
     price: ''
