@@ -51,6 +51,12 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
+console.log("YANDEX ENV:", {
+  access: process.env.YANDEX_ACCESS_KEY,
+  secret: process.env.YANDEX_SECRET_KEY ? "***MASKED***" : undefined,
+  bucket: process.env.YANDEX_BUCKET
+});
+
 app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
 });
