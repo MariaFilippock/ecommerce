@@ -3,25 +3,22 @@ export interface IAppState {
 }
 
 export interface IProductsState {
-    products: IProductType[];
-    cart: ICartProductType[];
-    favorites: number[];
+    products: IProduct[];
+    cart: ICartProduct[];
+    favorites: IProduct[];
     status: boolean;
+    isLoading: boolean;
 }
 
-export interface IProductType {
+export interface IProduct {
     id: number;
     title: string;
-    img: string;
+    img: string[];
     desc: string;
     category: string;
     price: string;
 }
 
-export interface ICartProductType {
-    id: number;
+export interface ICartProduct extends IProduct {
     count: number;
 }
-
-export type detailedCartProductType = IProductType & {count: number}
-

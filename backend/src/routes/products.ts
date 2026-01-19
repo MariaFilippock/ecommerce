@@ -1,8 +1,8 @@
 import {Router} from 'express';
 import _productsData from '../data/data.json';
-import {IProductsStateType} from '../models';
+import {IProductsState} from '../models';
 
-const productsData = _productsData as IProductsStateType;
+const productsData = _productsData as IProductsState;
 
 const productsRouter = Router();
 
@@ -43,12 +43,12 @@ productsRouter.post('/products/create', (req, res) => {
 })
 
 //удаление товара из общего списка
-productsRouter.delete('/products/:id', (req, res) => {
+productsRouter.delete('/products/delete/:id', (req, res) => {
     try {
         const removedProductId = Number(req.params.id);
-        const filteredProducts = productsData.products.filter(product => product.id !== removedProductId);
+        productsData.products = productsData.products.filter(product => product.id !== removedProductId);
 
-        res.status(200).json(filteredProducts);
+        res.status(200).send();
     } catch (e) {
         res.status(500).json(e);
     }

@@ -6,48 +6,38 @@ import Utils from '../../CartUtils';
 import {ROUTES} from '../../const';
 import {useNavigate} from 'react-router-dom';
 import {useAppDispatch} from '../../store/hooks';
-import {setCartThunk} from '../../store/cart-thunks';
+import {loadCartThunk} from '../../store/cart-thunks';
 import {useSelector} from 'react-redux';
-import {detailedCartProductType, IAppState} from '../../models';
+import {IAppState} from '../../models';
 
 const CartPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const cartProducts = useSelector((state: IAppState) =>
-        state.productsData.cart
-            .map((cartProduct) => {
-                const product = state.productsData.products.find(product => product.id === cartProduct.id);
 
-                if (!product) return null;
-
-                return {
-                    ...product,
-                    count: cartProduct.count
-                }
-            })
-            .filter((i): i is detailedCartProductType => i !== null)
-    );
+    const {cart, isLoading} = useSelector((state: IAppState) => state.productsData);
 
     useEffect(() => {
-        dispatch(setCartThunk());
+        dispatch(loadCartThunk());
     }, [dispatch]);
 
     const handleProductsClick = () => {
         navigate(`${ROUTES.PRODUCTS}`);
     };
 
-    const quantity = Utils.cartProductsQuantity(cartProducts);
-    const totalCost = Utils.cartProductsTotalCost(cartProducts);
+    const quantity = Utils.cartProductsQuantity(cart);
+    const totalCost = Utils.cartProductsTotalCost(cart);
+
+    if (isLoading) return <p>Загрузка корзины...</p>;
 
     return (
         <div className={styles.cartContent}>
             <h2>Корзина</h2>
 
             <>
-                {cartProducts.length > 0 ? (
+                {cart.length > 0 ? (
                         <div className={styles.fullContainer}>
                             <div className={styles.products}>
-                                {cartProducts.map((product) => (
+                                {cart.map((product) => (
                                         <CartProduct key={product.id} product={product}/>
                                     )
                                 )}

@@ -1,23 +1,35 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Tabs, TabsProps} from 'antd';
 import {EAdministrationTab, Text} from '../../const';
 import ProductsTable from './components/ProductsTable';
 import AddProductForm from './components/AddProductForm';
-import {IProductType} from '../../models';
+import {IAppState, IProduct} from '../../models';
 import EditProductForm from './components/EditProductForm';
+import {useSelector} from 'react-redux';
+import {loadProductsThunk} from '../../store/product-thunk';
+import {useAppDispatch} from '../../store/hooks';
 
 const ADD_TAB_KEY = 'ADD_TAB_KEY';
 export type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
 
 const AdminPage = () => {
+    const dispatch = useAppDispatch();
     const [activeKey, setActiveKey] = useState<string>(EAdministrationTab.PRODUCTS_TABLE);
     const [tabs, setTabs] = useState<NonNullable<TabsProps['items']>>([]);
+    const products = useSelector((state: IAppState) => state.productsData.products);
+
+    /**
+     Загрузка списка товаров
+     */
+    useEffect(() => {
+        dispatch(loadProductsThunk());
+    }, [dispatch])
 
     /**
      * Обработчик клика на "добавить новый товар" открытия новый таба
      */
     const addNewProduct = () => {
-        const exists = tabs.some(tab => tab.key === ADD_TAB_KEY);
+        const exists = tabs?.some(tab => tab.key === ADD_TAB_KEY);
 
         if (exists) {
             return setActiveKey(ADD_TAB_KEY);
@@ -39,10 +51,10 @@ const AdminPage = () => {
     /**
      * Обработчик нажатия на строку таблицы.
      */
-    const editProductTab = (product: IProductType) => {
+    const editProductTab = (product: IProduct) => {
         const tabKey = `edit-${product.id}`;
 
-        const exists = tabs.some(tab => tab.key === tabKey);
+        const exists = tabs?.some(tab => tab.key === tabKey);
 
         if (exists) {
             return setActiveKey(tabKey);
@@ -101,7 +113,7 @@ const AdminPage = () => {
                             Добавить новый товар
                         </Button>
 
-                        <ProductsTable onProductClick={editProductTab}/>
+                        <ProductsTable products={products} onProductClick={editProductTab}/>
                     </>
                 ),
             }, ...tabs]}

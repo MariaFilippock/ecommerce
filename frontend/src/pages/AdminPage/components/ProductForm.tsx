@@ -5,11 +5,11 @@ import {Button, Input, Select, Upload} from 'antd';
 import {FULL_WIDTH_STYLE, PRODUCT_CATEGORY_DICT} from '../../../const';
 import {convertToSelectOptions} from '../../../helpers';
 import {UploadOutlined} from '@ant-design/icons';
-import {IProductType} from '../../../models';
+import {IProduct} from '../../../models';
 
 interface IProps {
-    product: IProductType;
-    changeProductDetails: (changes: Partial<IProductType>) => void;
+    product: IProduct;
+    changeProductDetails: (changes: Partial<IProduct>) => void;
 }
 
 const ProductForm = ({product, changeProductDetails}: IProps) => {
@@ -30,10 +30,20 @@ const ProductForm = ({product, changeProductDetails}: IProps) => {
         changeProductDetails({price: e.target.value});
     };
 
-    const handleImageUpload = (info: any) => {
-        if (info.file && info.file.name) {
-            changeProductDetails({img: info.file.name});
-        }
+    const handleImageUpload = async (info: any) => {
+        const file = info.file;
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await res.json();
+
+        changeProductDetails({img: [...(product.img || []), data.url]});
     };
 
     return (
@@ -71,7 +81,7 @@ const ProductForm = ({product, changeProductDetails}: IProps) => {
             </RowField>
 
             <RowField label='Изображение'>
-                <Upload beforeUpload={() => false} onChange={handleImageUpload}>
+                <Upload beforeUpload={() => false} multiple onChange={handleImageUpload}>
                     <Button icon={<UploadOutlined/>}>Загрузить</Button>
                 </Upload>
             </RowField>

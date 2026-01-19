@@ -1,24 +1,26 @@
 import React from 'react';
-import {IAppState, IProductType} from '../../models';
+import {IAppState, IProduct} from '../../models';
 import {useSelector} from 'react-redux';
 import {HeartOutlined, HeartFilled} from '@ant-design/icons';
 import styles from './styles.module.scss';
 import {changeProductCountThunk} from '../../store/cart-thunks';
 import {useAppDispatch} from '../../store/hooks';
 import {toggleFavoritesThunk} from '../../store/favorites-thunk';
+import {Carousel} from 'antd';
 
 interface IProps {
-    product: IProductType;
+    product: IProduct;
     onCardClick: (product: number) => void;
 }
 
 const Product = ({product, onCardClick}: IProps) => {
     const favorites = useSelector((state: IAppState) => state.productsData.favorites ?? []);
-    const isFavorite = favorites.some((favoriteId) => favoriteId === product.id);
+    const isFavorite = favorites.some((favorite) => favorite.id === product.id);
     const dispatch = useAppDispatch();
 
     const handleAddProductAtCart = () => {
-        dispatch(changeProductCountThunk(product.id, +1));
+        const cartProduct = {...product, count: +1};
+        dispatch(changeProductCountThunk(cartProduct));
     };
 
     const handleToggleFavorites = () => {
@@ -28,7 +30,20 @@ const Product = ({product, onCardClick}: IProps) => {
     return (
         <div className={styles.product}>
             <div className={styles.productImg}>
-                <img alt={product.title} src={`/img/${product.img}`} onClick={() => onCardClick(product.id)}/>
+                <Carousel arrows infinite={false} rootClassName={styles.carouselContainer}>
+                    {product.img?.map((url, index) =>
+                        <div key={`container-${index}`} className={styles.carouselSlide}>
+                            <img
+                                key={`img-${index}`}
+                                alt={`${product.title}-${index}`}
+                                className={styles.carouselImg}
+                                src={url}
+                                onClick={() => onCardClick(product.id)}
+                            />
+                        </div>
+                    )}
+                </Carousel>
+
                 <div className={styles.addCart} onClick={handleAddProductAtCart}>
                     Добавить в корзину
                 </div>

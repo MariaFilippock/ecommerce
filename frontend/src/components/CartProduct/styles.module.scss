@@ -15,9 +15,22 @@ img {
   display: block;
 }
 
-.productImg {
-  position: relative;
-  overflow: hidden;
+.carouselContainer {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+
+  .carouselSlide {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.carouselImg {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain; //чтобы картинку не обрезало
   cursor: pointer;
 }
 

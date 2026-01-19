@@ -1,16 +1,18 @@
 import React from 'react';
 import styles from './styles.module.scss';
 import {MinusOutlined, PlusOutlined} from '@ant-design/icons';
-import {detailedCartProductType} from '../../models';
+import {ICartProduct} from '../../models';
 import {useNavigate} from 'react-router-dom';
 import {ROUTES} from '../../const';
 import CartUtils from '../../CartUtils';
 import {changeProductCountThunk} from '../../store/cart-thunks';
 import {useAppDispatch} from '../../store/hooks';
+import {Carousel} from 'antd';
 
 interface IProps {
-    product: detailedCartProductType,
+    product: ICartProduct,
 }
+
 
 const CartProduct = ({product}: IProps) => {
     const dispatch = useAppDispatch();
@@ -19,11 +21,13 @@ const CartProduct = ({product}: IProps) => {
     const totalCost = CartUtils.totalCostPerProduct(product);
 
     const handleRemoveProductFromCart = () => {
-        dispatch(changeProductCountThunk(product.id, -1));
+        const cartProduct = {...product, count: -1};
+        dispatch(changeProductCountThunk(cartProduct));
     };
 
     const handleAddProductToCart = () => {
-        dispatch(changeProductCountThunk(product.id, +1));
+        const cartProduct = {...product, count: +1};
+        dispatch(changeProductCountThunk(cartProduct));
     };
 
     const handleDetailProductCardClick = () => {
@@ -32,9 +36,18 @@ const CartProduct = ({product}: IProps) => {
 
     return (
         <div className={styles.product}>
-            <div className={styles.productImg} onClick={handleDetailProductCardClick}>
-                <img alt={product.title} src={`/img/${product.img}`}/>
-            </div>
+            <Carousel arrows infinite={false} rootClassName={styles.carouselContainer}>
+                {product.img?.map((url, index) =>
+                    <div key={index} className={styles.carouselSlide}>
+                            <img
+                                alt={`${product.title}-${index}`}
+                                src={url}
+                                onClick={handleDetailProductCardClick}
+                                className={styles.carouselImg}
+                            />
+                    </div>
+                )}
+            </Carousel>
 
             <div className={styles.productInfo}>
                 <h3 className={styles.productTitle} onClick={handleDetailProductCardClick}>{product.title}</h3>

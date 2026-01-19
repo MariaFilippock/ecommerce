@@ -1,17 +1,18 @@
 import React from 'react';
 import {Table} from 'antd';
 import {useSelector} from 'react-redux';
-import {IAppState, IProductType} from '../../../models';
+import {IAppState, IProduct} from '../../../models';
 import {ColumnsType} from 'antd/es/table';
 
 interface IProps {
-    onProductClick?: (product: IProductType) => void;
+    products: IProduct[];
+    onProductClick?: (product: IProduct) => void;
 }
 
-const ProductsTable = ({onProductClick}: IProps) => {
-    const products = useSelector((state: IAppState) => state.productsData.products);
+const ProductsTable = ({products, onProductClick}: IProps) => {
 
-    const productColumns: ColumnsType<IProductType> = [
+
+    const productColumns: ColumnsType<IProduct> = [
         {
             key: 'id',
             title: 'id',
@@ -40,6 +41,11 @@ const ProductsTable = ({onProductClick}: IProps) => {
             title: 'Цена товара',
             dataIndex: 'price'
         },
+        {
+            key: 'img',
+            title: 'Изображение',
+            dataIndex: 'img'
+        }
     ];
 
     return (
@@ -48,8 +54,9 @@ const ProductsTable = ({onProductClick}: IProps) => {
                 rowKey="id"
                 size="middle"
                 onRow={(record) => ({
-                    onDoubleClick: () =>  {
-                        onProductClick?.(record)},
+                    onDoubleClick: () => {
+                        onProductClick?.(record)
+                    },
                 })}
                 columns={productColumns}
                 dataSource={products || []}

@@ -4,6 +4,7 @@ import {IStringDictionaryItem} from './helpers';
 
 export const SET_PRODUCTS = 'SET_PRODUCTS'; // для списка товаров
 export const SET_IS_ADDING = 'SET_IS_ADDING'; //статус добавления товара
+export const SET_IS_LOADING = 'SET_IS_LOADING'; //статус загрузки
 export const TOGGLE_FAVORITE = 'TOGGLE_FAVORITE'; // добавляем в/убираем из избранное/го
 export const SET_CART = 'SET_CART';
 

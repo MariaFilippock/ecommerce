@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styles from '../AdminPage.module.scss';
 import {Button} from 'antd';
 import {useAppDispatch} from '../../../store/hooks';
-import {IAppState, IProductType} from '../../../models';
+import {IAppState, IProduct} from '../../../models';
 import {useSelector} from 'react-redux';
 import {postNewProductThunk} from '../../../store/product-thunk';
 import ProductForm from '../components/ProductForm';
@@ -14,7 +14,7 @@ interface IProps {
 const defaultProduct = {
     id: -1,
     title: '',
-    img: '',
+    img: [],
     desc: '',
     category: '',
     price: ''
@@ -22,10 +22,10 @@ const defaultProduct = {
 
 const AddProductForm = ({onSuccessAdd}: IProps) => {
     const dispatch = useAppDispatch();
-    const [product, setProduct] = useState<IProductType>(defaultProduct as IProductType);
+    const [product, setProduct] = useState<IProduct>(defaultProduct as IProduct);
     const status = useSelector((state: IAppState) => state.productsData.status);
 
-    const changeProductDetails = (changes: Partial<IProductType>) => {
+    const changeProductDetails = (changes: Partial<IProduct>) => {
         setProduct(state => ({
             ...state,
             ...changes,

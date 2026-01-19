@@ -10,6 +10,30 @@ main .product {
   overflow: hidden;
 }
 
+.carouselContainer {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+
+  .carouselSlide {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.carouselImg {
+  width: 100%;
+  //max-height: 400px;
+  object-fit: contain; //чтобы картинку не обрезало
+  cursor: pointer;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
 main b {
   margin: 10px 20px;
   color: #333;
@@ -28,11 +52,6 @@ main b {
   flex-direction: column;
   justify-content: space-between;
   max-height: 105px;
-}
-
-img {
-  width: 100%;
-  display: block;
 }
 
 .addCart {
