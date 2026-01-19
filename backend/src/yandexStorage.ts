@@ -3,12 +3,12 @@ import {S3Client, PutObjectCommand} from "@aws-sdk/client-s3";
 import dotenv from "dotenv";
 
 if (process.env.NODE_ENV !== "production") {
-  dotenv.config();
+    dotenv.config();
 }
 
 export const s3 = new S3Client({
-    region: 'ru-central1',
-    endpoint: 'https://storage.yandexcloud.net',
+    region: process.env.YANDEX_REGION,
+    endpoint: process.env.YANDEX_ENDPOINT,
     credentials: {
         accessKeyId: process.env.YANDEX_ACCESS_KEY!,
         secretAccessKey: process.env.YANDEX_SECRET_KEY!
