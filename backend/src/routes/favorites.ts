@@ -1,14 +1,17 @@
 import {Router} from 'express';
 import _productsData from '../data/data.json';
-import {IProductsStateType} from '../models';
+import {IProductsState} from '../models';
+import {getDetailedFavoritesList} from '../helper';
 
-const productsData = _productsData as IProductsStateType;
+const productsData = _productsData as IProductsState;
 
 const favoritesRouter = Router();
 
 favoritesRouter.get('/favorites/', (_req, res) => {
     try {
-        res.json(productsData.favorites);
+        const favoritesList = getDetailedFavoritesList(productsData);
+
+        res.json(favoritesList);
     } catch (e) {
         res.status(500).json(e);
     }
@@ -30,7 +33,9 @@ favoritesRouter.post('/favorites/', (req, res) => {
             productsData.favorites.push(id);
         }
 
-        res.status(200).json(productsData.favorites);
+        const favoritesList = getDetailedFavoritesList(productsData);
+
+        res.status(200).json(favoritesList);
     } catch (e) {
         res.status(500).json(e);
     }

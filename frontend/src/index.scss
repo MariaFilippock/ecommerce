@@ -19,7 +19,8 @@ main {
   display: flex;
   width: 100%;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 27px;
 }
 
 footer {
@@ -28,9 +29,9 @@ footer {
 }
 
 .selectOptionWithFullHeight {
-    div[class='ant-select-item-option-content'] {
-        white-space: normal !important;
-        padding-right: 7px;
-    }
+  div[class='ant-select-item-option-content'] {
+    white-space: normal !important;
+    padding-right: 7px;
+  }
 }
 

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {IProductType} from '../../../models';
+import {IProduct} from '../../../models';
 import {Button} from 'antd';
 import ProductForm from '../components/ProductForm';
 import {useAppDispatch} from '../../../store/hooks';
@@ -7,7 +7,7 @@ import {deleteProductThunk, editProductThunk} from '../../../store/product-thunk
 import styles from '../AdminPage.module.scss';
 
 interface IProps {
-    product: IProductType,
+    product: IProduct,
     onSuccessDelete: () => void
 }
 
@@ -16,7 +16,7 @@ const EditProductForm = ({product, onSuccessDelete}: IProps) => {
     const [editedProduct, setEditedProduct] = useState(product);
 
 
-    const changeProductDetails = (changes: Partial<IProductType>) => {
+    const changeProductDetails = (changes: Partial<IProduct>) => {
         setEditedProduct(state => ({
             ...state,
             ...changes

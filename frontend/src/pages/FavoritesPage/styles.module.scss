@@ -2,7 +2,8 @@ main {
   display: flex;
   width: 100%;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 27px;
 }
 
 main .product {
@@ -10,4 +11,45 @@ main .product {
   margin-bottom: 50px;
   overflow: hidden;
   position: relative;
+}
+
+.favoritesContainer {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  max-height: 442px;
+}
+
+.messageEmptyFavorites {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  margin-bottom: auto;
+  margin-top: auto;
+  padding-bottom: 44px;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.shoppingOutlinedIcon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.favoritesIsEmpty {
+  margin-bottom: 10px;
+}
+
+.toProducts {
+  font-family: inherit;
+  margin-top: 8px;
+  min-width: 300px;
+  padding: 20px;
+  background: #000;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
 }

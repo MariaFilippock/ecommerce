@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import styles from './styles.module.scss';
 import {ShoppingOutlined} from '@ant-design/icons';
 import CartProduct from '../../components/CartProduct/CartProduct';
@@ -6,61 +6,38 @@ import Utils from '../../CartUtils';
 import {ROUTES} from '../../const';
 import {useNavigate} from 'react-router-dom';
 import {useAppDispatch} from '../../store/hooks';
-import {setCartThunk} from '../../store/cart-thunks';
+import {loadCartThunk} from '../../store/cart-thunks';
 import {useSelector} from 'react-redux';
-import {detailedCartProductType, IAppState} from '../../models';
+import {IAppState} from '../../models';
 
 const CartPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const [loading, setLoading] = useState(true);
 
-
-    const cartProducts = useSelector((state: IAppState) => {
-        const {cart, products} = state.productsData;
-        if (!cart || !products.length) return [];
-
-        return cart
-            .map((cartProduct) => {
-                const product = products.find(product => product.id === cartProduct.id);
-
-                if (!product) return null;
-
-                return {
-                    ...product,
-                    count: cartProduct.count
-                }
-            })
-            .filter((i): i is detailedCartProductType => i !== null)
-    });
+    const {cart, isLoading} = useSelector((state: IAppState) => state.productsData);
 
     useEffect(() => {
-        const loadCart = async () => {
-            setLoading(true);
-            await dispatch(setCartThunk() as any); // кастуем в any, чтобы TS не ругался
-            setLoading(false);
-        };
-        loadCart();
+        dispatch(loadCartThunk());
     }, [dispatch]);
 
     const handleProductsClick = () => {
         navigate(`${ROUTES.PRODUCTS}`);
     };
 
-    const quantity = Utils.cartProductsQuantity(cartProducts);
-    const totalCost = Utils.cartProductsTotalCost(cartProducts);
+    const quantity = Utils.cartProductsQuantity(cart);
+    const totalCost = Utils.cartProductsTotalCost(cart);
 
-    if (loading) return <p>Загрузка корзины...</p>;
+    if (isLoading) return <p>Загрузка корзины...</p>;
 
     return (
         <div className={styles.cartContent}>
             <h2>Корзина</h2>
 
             <>
-                {cartProducts.length > 0 ? (
+                {cart.length > 0 ? (
                         <div className={styles.fullContainer}>
                             <div className={styles.products}>
-                                {cartProducts.map((product) => (
+                                {cart.map((product) => (
                                         <CartProduct key={product.id} product={product}/>
                                     )
                                 )}

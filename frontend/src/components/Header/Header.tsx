@@ -18,7 +18,7 @@ const Header = () => {
                     <NavLink className={setIsActive} to='/products'>Товары</NavLink>
                     <NavLink className={setIsActive} to='/about'>Про нас</NavLink>
                     <NavLink className={setIsActive} to='/admin'>Администрирование</NavLink>
-                    <NavLink className={setIsActive} to='/profile'>Кабинет</NavLink>
+                    {/*<NavLink className={setIsActive} to='/profile'>Кабинет</NavLink>*/}
                     <NavLink className={setIsActive} to='/favorites'>Избранное</NavLink>
                     <NavLink className={setIsActive} to='/cart'>
                         Корзина {cart.length > 0 ? `(${Utils.cartProductsQuantity(cart)})` : null}

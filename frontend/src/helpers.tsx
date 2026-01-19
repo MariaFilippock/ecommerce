@@ -1,6 +1,6 @@
 import {Select} from 'antd';
 import styles from './index.scss';
-import {IProductType} from './models';
+import {IProduct} from './models';
 
 const {Option} = Select;
 
@@ -25,7 +25,7 @@ export interface INumberDictionaryItem {
 /** Дополнительные данные, для option_data в обычной опции. */
 export type TStringNumberDataOption = { label: string; id: string | number };
 
-export const stringDictionaryItemConverter = (products: IProductType[]) => {
+export const stringDictionaryItemConverter = (products: IProduct[]) => {
     let stringDictionaryArray = [];
     stringDictionaryArray = products.map((product) => {
         return {

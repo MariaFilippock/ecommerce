@@ -1,21 +1,15 @@
 import {Router} from 'express';
 import _productsData from '../data/data.json';
-import {IProductsStateType} from '../models';
+import {IProductsState} from '../models';
+import {getDetailedCartProducts} from '../helper';
 
-const productsData = _productsData as IProductsStateType;
+const productsData = _productsData as IProductsState;
 
 const cartRouter = Router();
 
 cartRouter.get('/cart', (_req, res) => {
     try {
-        const detailedCart = productsData.cart.map((cartProduct) => {
-            const product = productsData.products.find(product => product.id === cartProduct.id);
-
-            return {
-                ...product,
-                count: cartProduct.count
-            }
-        });
+        const detailedCart = getDetailedCartProducts(productsData);
 
         res.json(detailedCart);
     } catch (e) {
@@ -43,7 +37,9 @@ cartRouter.post('/cart', (req, res) => {
             productsData.cart.push({id, count});
         }
 
-        res.status(200).json(productsData.cart);
+        const detailedCartProducts = getDetailedCartProducts(productsData);
+
+        res.status(200).json(detailedCartProducts);
     } catch (e) {
         res.status(500).json(e);
     }

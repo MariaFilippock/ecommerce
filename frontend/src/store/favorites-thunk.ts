@@ -1,7 +1,7 @@
 import {AppThunk} from '../store/types';
 import {setFavoritesAC} from '../store/products-reducer';
 
-export const setFavoritesThunk = (): AppThunk => async (dispatch) => {
+export const loadFavoritesThunk = (): AppThunk => async (dispatch) => {
     try {
         const res = await fetch('/api/favorites');
         const data = await res.json();

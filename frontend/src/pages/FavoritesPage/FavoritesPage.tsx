@@ -1,27 +1,27 @@
 import React, {useEffect} from 'react';
-import {useSelector} from 'react-redux';
-import {IAppState, IProductType} from '../../models';
+import {IAppState, IProduct} from '../../models';
 import Product from '../../components/Product/Product';
 import {ROUTES} from '../../const';
 import {useNavigate} from 'react-router-dom';
 import {useAppDispatch} from '../../store/hooks';
-import {setFavoritesThunk} from '../../store/favorites-thunk';
+import {loadFavoritesThunk} from '../../store/favorites-thunk';
+import styles from './styles.module.scss';
+import {HeartOutlined} from '@ant-design/icons';
+import {useSelector} from 'react-redux';
 
 
 const FavoritesPage = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const selectFavoritesProducts = (state: IAppState) =>
-        state.productsData.favorites
-            .map((favId) =>
-                state.productsData.products.find((product) => product.id === favId)
-            ).filter((product): product is IProductType => product !== undefined);
+    const favoritesList = useSelector((state: IAppState) => state.productsData.favorites);
 
-    const favoritesList = useSelector(selectFavoritesProducts);
+    const handleProductsClick = () => {
+        navigate(`${ROUTES.PRODUCTS}`);
+    };
 
     useEffect(() => {
-        dispatch(setFavoritesThunk());
+        dispatch(loadFavoritesThunk());
     }, [dispatch]);
 
     const handleDetailProductCardClick = (id: number) => {
@@ -31,11 +31,17 @@ const FavoritesPage = () => {
     return (
         <main>
             {favoritesList.length > 0 ? (
-                favoritesList.map((favProduct) => (
+                favoritesList.map((favProduct: IProduct) => (
                     <Product key={favProduct.id} product={favProduct} onCardClick={handleDetailProductCardClick}/>
                 ))
             ) : (
-                <div>Пусто</div>
+                <div className={styles.favoritesContainer}>
+                    <div className={styles.messageEmptyFavorites}>
+                        <HeartOutlined className={styles.shoppingOutlinedIcon}/>
+                        <p className={styles.favoritesIsEmpty}>Ваше избранное пусто</p>
+                        <button onClick={handleProductsClick} className={styles.toProducts}>В магазин</button>
+                    </div>
+                </div>
             )}
         </main>
     );
