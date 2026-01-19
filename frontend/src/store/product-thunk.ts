@@ -2,6 +2,7 @@ import {AppThunk} from '../store/types';
 import {setIsAddingAC, setIsLoadingAC, setProductsAC} from '../store/products-reducer';
 import {IProduct} from '../models';
 import {message} from 'antd';
+import {loadCartThunk} from '../store/cart-thunks';
 
 
 //получение списка товаров
@@ -52,8 +53,6 @@ export const postNewProductThunk = (product: IProduct, onSuccessAdd: () => void)
 //удаление товара из списка товаров в админке
 export const deleteProductThunk = (productId: string | number, onSuccessDelete: () => void): AppThunk => async (dispatch) => {
     try {
-        // dispatch(setIsAddingAC(true));
-
         const res = await fetch(`/api/products/delete/${productId}`, {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'},
@@ -66,6 +65,7 @@ export const deleteProductThunk = (productId: string | number, onSuccessDelete: 
         }
 
         dispatch(loadProductsThunk());
+        dispatch(loadCartThunk());
         message.success('Товар успешно удален!');
         onSuccessDelete();
     } catch (e) {

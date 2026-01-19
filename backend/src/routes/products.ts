@@ -48,6 +48,7 @@ productsRouter.delete('/products/delete/:id', (req, res) => {
         const removedProductId = Number(req.params.id);
         productsData.products = productsData.products.filter(product => product.id !== removedProductId);
 
+
         res.status(200).send();
     } catch (e) {
         res.status(500).json(e);

@@ -15,7 +15,7 @@ const CartPage = () => {
     const dispatch = useAppDispatch();
 
     const {cart, isLoading} = useSelector((state: IAppState) => state.productsData);
-
+    console.log(cart);
     useEffect(() => {
         dispatch(loadCartThunk());
     }, [dispatch]);

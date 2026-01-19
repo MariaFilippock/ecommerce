@@ -13,7 +13,7 @@ const Header = () => {
     return (
         <header>
             <div>
-                <span className={styles.logo}>House Staff</span>
+                <NavLink className={styles.logo} to='/'>House Staff</NavLink>
                 <ul className={styles.nav}>
                     <NavLink className={setIsActive} to='/products'>Товары</NavLink>
                     <NavLink className={setIsActive} to='/about'>Про нас</NavLink>

@@ -10,12 +10,14 @@ const FavoritesPage = lazy(() => import('./pages/FavoritesPage/FavoritesPage'));
 const CartPage = lazy(() => import('./pages/CartPage/CartPage'));
 const DetailProductCardPage = lazy(() => import('./pages/DetailProductCardPage/DetailProductCardPage'));
 const AdminPage = lazy(() => import('./pages/AdminPage/AdminPage'));
+const StartPage = lazy(() => import('./pages/StartPage/StartPage'));
 
 const App = () => {
     return (
         <div className="wrapper">
             <Header/>
             <Routes>
+                <Route path='/' element={<StartPage/>} />
                 <Route path='/about' element={<About/>}/>
                 <Route path='/profile' element={<Profile/>}/>
                 <Route path='/products' element={<ProductsPage/>}/>

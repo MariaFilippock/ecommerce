@@ -25,7 +25,7 @@ export const loadCartThunk = (): AppThunk => async (dispatch) => {
         const res = await fetch('/api/cart');
 
         const data = await res.json();
-
+        console.log(data);
         dispatch(setCartAC(data));
     } catch (e) {
         console.error('loadCartThunk error', e);

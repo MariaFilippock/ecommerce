@@ -1,0 +1,30 @@
+.descContainer {
+  margin: 10px;
+  padding: 4px;
+  font-size: 18px;
+  max-width: 100%;
+}
+
+.descContainer > div {
+  max-width: 100%;
+  margin: 4px 10px 30px 10px;
+}
+
+ul {
+  list-style-position: inside;
+}
+
+ul li {
+  padding: 4px;
+}
+
+.techBlock {
+  display: flex;
+  column-gap: 30px;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.descContainer > div > div > div {
+  margin: 4px 10px 15px 10px;
+}
