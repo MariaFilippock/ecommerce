@@ -4,9 +4,9 @@ import path from 'path';
 import cors from 'cors';
 import morgan from 'morgan';
 import {createProxyMiddleware} from 'http-proxy-middleware';
-// import dotenv from "dotenv";
+// import dotenv from "dotenv"; //для локального запуска
 
-// dotenv.config({path: path.resolve(__dirname, '../../.env')});
+// dotenv.config({path: path.resolve(__dirname, '../../.env')}); //для локального запуска//для локального запуска
 
 import cartRouter from './routes/cart';
 import favoritesRouter from './routes/favorites';
@@ -47,7 +47,10 @@ const telegramStream = {
         }
     }
 }
-app.use(morgan('combined', {stream: telegramStream})); //логирование http-запросов
+
+app.set('trust proxy', true); //express должен читать X-Forwarded-For заголовок от прокси
+const morganFormat = ':remote-addr - [:date[iso]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms';
+app.use(morgan(morganFormat, {stream: telegramStream})); //логирование http-запросов
 
 app.use(cors({origin: "*"}));
 app.use(express.json());
