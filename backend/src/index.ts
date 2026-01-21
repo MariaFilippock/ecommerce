@@ -1,7 +1,9 @@
 import express from 'express';
+import axios from 'axios';
 import path from 'path';
-import cors from "cors";
-import { createProxyMiddleware } from 'http-proxy-middleware';
+import cors from 'cors';
+import morgan from 'morgan';
+import {createProxyMiddleware} from 'http-proxy-middleware';
 
 import cartRouter from './routes/cart';
 import favoritesRouter from './routes/favorites';
@@ -11,7 +13,25 @@ import uploadRouter from './routes/upload';
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-app.use(cors({ origin: "*" }));
+const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN!;
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID!;
+
+const telegramStream = {
+    write: async (message: string) => {
+        try {
+            await axios.post(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,
+                {
+                    chat_id: TELEGRAM_CHAT_ID,
+                    text: `HTTP Log:\n${message}`,
+                })
+        } catch (e) {
+            console.error('Failed to send log to Telegram:', e);
+        }
+    }
+}
+app.use(morgan('combined', {stream: telegramStream})); //логирование http-запросов
+
+app.use(cors({origin: "*"}));
 app.use(express.json());
 
 // API маршруты
@@ -36,7 +56,6 @@ if (process.env.NODE_ENV !== 'production') {
             changeOrigin: true
         })
     );
-
 } else {
     // PRODUCTION MODE
     console.log("Production mode: serving React build");
@@ -50,12 +69,6 @@ if (process.env.NODE_ENV !== 'production') {
         res.sendFile(path.join(frontendBuildPath, 'index.html'));
     });
 }
-
-console.log("YANDEX ENV:", {
-  access: process.env.YANDEX_ACCESS_KEY,
-  secret: process.env.YANDEX_SECRET_KEY ? "***MASKED***" : undefined,
-  bucket: process.env.YANDEX_BUCKET
-});
 
 app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
