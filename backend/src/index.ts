@@ -4,6 +4,9 @@ import path from 'path';
 import cors from 'cors';
 import morgan from 'morgan';
 import {createProxyMiddleware} from 'http-proxy-middleware';
+// import dotenv from "dotenv";
+
+// dotenv.config({path: path.resolve(__dirname, '../../.env')});
 
 import cartRouter from './routes/cart';
 import favoritesRouter from './routes/favorites';
@@ -19,10 +22,18 @@ const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID!;
 const telegramStream = {
     write: async (message: string) => {
         try {
+            // Чистим строку от лишних символов переноса строки
+            const cleanMessage = message.trim();
+            const formatted = `*HTTP Log*
+            • IP: ${cleanMessage.split(' ')[0]}
+            • Request: ${cleanMessage.match(/"(\w+) (\S+) HTTP\/[\d.]+"/)?.[0] || '-'}
+            • Status: ${cleanMessage.match(/" (\d{3}) /)?.[1] || '-'} `;
+
             await axios.post(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,
                 {
                     chat_id: TELEGRAM_CHAT_ID,
-                    text: `HTTP Log:\n${message}`,
+                    text: formatted,
+                    parse_mode: 'Markdown'
                 })
         } catch (e) {
             console.error('Failed to send log to Telegram:', e);
