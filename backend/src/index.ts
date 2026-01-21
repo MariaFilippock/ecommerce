@@ -21,14 +21,21 @@ const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID!;
 
 const telegramStream = {
     write: async (message: string) => {
-        try {
-            // Чистим строку от лишних символов переноса строки
-            const cleanMessage = message.trim();
-            const formatted = `*HTTP Log*
-            • IP: ${cleanMessage.split(' ')[0]}
-            • Request: ${cleanMessage.match(/"(\w+) (\S+) HTTP\/[\d.]+"/)?.[0] || '-'}
-            • Status: ${cleanMessage.match(/" (\d{3}) /)?.[1] || '-'} `;
 
+        // Чистим строку от лишних символов переноса строки
+        const cleanMessage = message.trim();
+
+        const ip = cleanMessage.match(/^(\S+)/)?.[1] || '-';
+        const request = cleanMessage.match(/"(\w+) (\S+) HTTP\/[\d.]+"/)?.[0] || '-';
+        const statusCode = parseInt(cleanMessage.match(/" (\d{3}) /)?.[1] || '0');
+        const time = cleanMessage.match(/- (\d+\.?\d*) ms/)?.[1] || '-';
+
+        const formatted = `*HTTP Log*
+            • IP: ${ip}
+            • Request: ${request}
+            • Status:  ${statusCode}
+            • Time: ${time} ms`;
+        try {
             await axios.post(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,
                 {
                     chat_id: TELEGRAM_CHAT_ID,
