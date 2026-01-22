@@ -12,6 +12,7 @@ import cartRouter from './routes/cart';
 import favoritesRouter from './routes/favorites';
 import productsRouter from './routes/products';
 import uploadRouter from './routes/upload';
+import favorites from './routes/favorites';
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -35,15 +36,23 @@ const telegramStream = {
             • Request: ${request}
             • Status:  ${statusCode}
             • Time: ${time} ms`;
-        try {
-            await axios.post(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,
-                {
-                    chat_id: TELEGRAM_CHAT_ID,
-                    text: formatted,
-                    parse_mode: 'Markdown'
-                })
-        } catch (e) {
-            console.error('Failed to send log to Telegram:', e);
+
+        const keywords = ['cart', 'products', 'upload', 'favorites'];
+        const hasKeyword = keywords.find((keyword) => request.includes(keyword));
+
+        if (hasKeyword) {
+            try {
+                await axios.post(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,
+                    {
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: formatted,
+                        parse_mode: 'Markdown'
+                    })
+            } catch (e) {
+                console.error('Failed to send log to Telegram:', e);
+            }
+        } else {
+            return
         }
     }
 }
