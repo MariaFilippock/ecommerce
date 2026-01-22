@@ -27,7 +27,7 @@ const StartPage = () => {
                 <div className={styles.techBlock}>
                     <div>
                         <h3>Frontend</h3>
-                        <div>React · TypeScript · Axios · Ant Design</div>
+                        <div>React · TypeScript · Fetch · Ant Design</div>
                     </div>
                     <div>
                         <h3>Backend</h3>
