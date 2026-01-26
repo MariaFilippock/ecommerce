@@ -56,7 +56,7 @@ productsRouter.delete('/products/delete/:id', (req, res) => {
 })
 
 //редактирование данных по товару из общего списка
-productsRouter.put('/products/update', (req, res) => {
+productsRouter.put('/products/update/:id', (req, res) => {
     try {
         const editedProduct = req.body;
 

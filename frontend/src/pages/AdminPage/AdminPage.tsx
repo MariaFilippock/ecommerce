@@ -66,7 +66,7 @@ const AdminPage = () => {
                 label: `${product.title} (редактирование)`,
                 key: tabKey,
                 closable: true,
-                children: (<EditProductForm onSuccessDelete={() => remove(tabKey)} product={product}/>)
+                children: (<EditProductForm onSuccessEdit={() => remove(tabKey)} product={product}/>)
             }
         ]);
 
@@ -74,7 +74,7 @@ const AdminPage = () => {
     };
 
     /**
-     * Закрытие таба
+     * Закрытие таба (при редактировании и удалении товара)
      */
     const remove = (targetKey: TargetKey) => {
         if (!tabs) {

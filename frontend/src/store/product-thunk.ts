@@ -51,7 +51,7 @@ export const postNewProductThunk = (product: IProduct, onSuccessAdd: () => void)
 }
 
 //удаление товара из списка товаров в админке
-export const deleteProductThunk = (productId: string | number, onSuccessDelete: () => void): AppThunk => async (dispatch) => {
+export const deleteProductThunk = (productId: string | number, onSuccessEdit: () => void): AppThunk => async (dispatch) => {
     try {
         const res = await fetch(`/api/products/delete/${productId}`, {
             method: 'DELETE',
@@ -67,14 +67,14 @@ export const deleteProductThunk = (productId: string | number, onSuccessDelete: 
         dispatch(loadProductsThunk());
         dispatch(loadCartThunk());
         message.success('Товар успешно удален!');
-        onSuccessDelete();
+        onSuccessEdit();
     } catch (e) {
         message.error('Ошибка при удалении товара!');
     }
 }
 
 //редактирование товара
-export const editProductThunk = (product: IProduct): AppThunk => async (dispatch) => {
+export const editProductThunk = (product: IProduct, onSuccessEdit: () => void): AppThunk => async (dispatch) => {
     try {
         const res = await fetch(`/api/products/update/${product.id}`, {
             method: 'PUT',
@@ -90,7 +90,9 @@ export const editProductThunk = (product: IProduct): AppThunk => async (dispatch
         const products = await res.json();
 
         dispatch(setProductsAC(products));
+
         message.success('Товар успешно отредактирован!');
+        onSuccessEdit();
     } catch (e) {
         message.error('Ошибка при редактировании товара!');
     }

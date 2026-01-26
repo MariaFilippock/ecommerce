@@ -32,25 +32,20 @@ const DetailProductCardPage = () => {
 
     return (
         <div className={styles.detailsContainer}>
-
-            <div className={styles.imageContainer}>
+            <div className={styles.imgContainer}>
                 {product?.img.map((url, index) =>
-                    <img key={`${product?.title}-${index}`} alt={product?.title} src={url}/>
+                    <img key={`${product?.title}-${index}`} alt={product?.title} src={url} className={styles.imgEl} />
                 )}
-
             </div>
-            <div className={styles.infoContainer}>
+
+            <div>
                 <h2>{product?.title}</h2>
-                <h2 className={styles.price}>{product.price} $</h2>
-
+                <h2 >{product.price} $</h2>
                 <div className={styles.description}>{product.desc}</div>
-
                 <div className={styles.addCart} onClick={handleAddProductAtCart}>
                     Добавить в корзину
                 </div>
-
             </div>
-
         </div>
     );
 };

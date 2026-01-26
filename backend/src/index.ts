@@ -4,9 +4,9 @@ import path from 'path';
 import cors from 'cors';
 import morgan from 'morgan';
 import {createProxyMiddleware} from 'http-proxy-middleware';
-// import dotenv from "dotenv"; //для локального запуска
+import dotenv from "dotenv"; //для локального запуска
 
-// dotenv.config({path: path.resolve(__dirname, '../../.env')}); //для локального запуска//для локального запуска
+dotenv.config({path: path.resolve(__dirname, '../../.env')}); //для локального запуска//для локального запуска
 
 import cartRouter from './routes/cart';
 import favoritesRouter from './routes/favorites';

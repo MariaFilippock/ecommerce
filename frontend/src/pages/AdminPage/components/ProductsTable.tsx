@@ -1,7 +1,6 @@
 import React from 'react';
 import {Table} from 'antd';
-import {useSelector} from 'react-redux';
-import {IAppState, IProduct} from '../../../models';
+import {IProduct} from '../../../models';
 import {ColumnsType} from 'antd/es/table';
 
 interface IProps {
@@ -10,7 +9,7 @@ interface IProps {
 }
 
 const ProductsTable = ({products, onProductClick}: IProps) => {
-
+    console.log(products);
 
     const productColumns: ColumnsType<IProduct> = [
         {

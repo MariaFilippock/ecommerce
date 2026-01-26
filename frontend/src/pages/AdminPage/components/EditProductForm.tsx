@@ -8,13 +8,12 @@ import styles from '../AdminPage.module.scss';
 
 interface IProps {
     product: IProduct,
-    onSuccessDelete: () => void
+    onSuccessEdit: () => void
 }
 
-const EditProductForm = ({product, onSuccessDelete}: IProps) => {
+const EditProductForm = ({product, onSuccessEdit}: IProps) => {
     const dispatch = useAppDispatch();
     const [editedProduct, setEditedProduct] = useState(product);
-
 
     const changeProductDetails = (changes: Partial<IProduct>) => {
         setEditedProduct(state => ({
@@ -31,14 +30,14 @@ const EditProductForm = ({product, onSuccessDelete}: IProps) => {
             <div className={styles.buttonsContainer}>
                 <Button
                     type='primary'
-                    onClick={() => dispatch(editProductThunk(editedProduct))}
+                    onClick={() => dispatch(editProductThunk(editedProduct, onSuccessEdit))}
                 >
                     Сохранить изменения
                 </Button>
                 <Button
                     type='primary'
                     disabled={!editedProduct}
-                    onClick={() => dispatch(deleteProductThunk(editedProduct.id, onSuccessDelete))}
+                    onClick={() => dispatch(deleteProductThunk(editedProduct.id, onSuccessEdit))}
                 >
                     Удалить товар
                 </Button>

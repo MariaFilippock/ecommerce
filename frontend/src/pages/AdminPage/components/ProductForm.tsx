@@ -1,16 +1,18 @@
 import React from 'react';
 import styles from '../AdminPage.module.scss';
 import {RowField} from '../../../components/RowField/RowField';
-import {Button, Input, Select, Upload} from 'antd';
+import {GetProp, Input, Select, Upload, UploadFile, UploadProps} from 'antd';
 import {FULL_WIDTH_STYLE, PRODUCT_CATEGORY_DICT} from '../../../const';
 import {convertToSelectOptions} from '../../../helpers';
-import {UploadOutlined} from '@ant-design/icons';
+import ImgCrop from 'antd-img-crop';
 import {IProduct} from '../../../models';
 
 interface IProps {
     product: IProduct;
     changeProductDetails: (changes: Partial<IProduct>) => void;
 }
+
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 const ProductForm = ({product, changeProductDetails}: IProps) => {
 
@@ -30,20 +32,70 @@ const ProductForm = ({product, changeProductDetails}: IProps) => {
         changeProductDetails({price: e.target.value});
     };
 
-    const handleImageUpload = async (info: any) => {
-        const file = info.file;
+    const handleImageUpload: UploadProps['customRequest'] = async (options) => {
+        const {file, onSuccess, onError} = options;
 
-        const formData = new FormData();
-        formData.append("file", file);
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
 
-        const res = await fetch('/api/upload', {
-            method: 'POST',
-            body: formData
-        });
+            const res = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            });
 
-        const data = await res.json();
+            const data = await res.json();
+            changeProductDetails({img: [...(product.img || []), data.url]});
 
-        changeProductDetails({img: [...(product.img || []), data.url]});
+            onSuccess?.(data, file);
+        } catch (e) {
+            console.error(e);
+            onError?.(e as any);
+        }
+    };
+
+    const handleImageRemove = async (file: UploadFile) => {
+        try {
+            const res = await fetch('/api/delete-by-url', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({url: file.url})
+            });
+
+            const data = await res.json();
+
+            changeProductDetails({img: product.img.filter(url => url !== data.url)});
+
+            return true;
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
+    };
+
+    const imgList: UploadFile[] = product.img.map((url, index) => ({
+        uid: url,
+        name: `${url?.split('/')?.pop()}`,
+        status: 'done',
+        url,
+    } as UploadFile));
+
+    const onPreview = async (file: UploadFile) => {
+        let src = file.url as string;
+
+        if (!src) {
+            src = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file.originFileObj as FileType);
+                reader.onload = () => resolve(reader.result as string);
+            });
+        }
+        const image = new Image();
+        image.src = src;
+        const imgWindow = window.open(src);
+        imgWindow?.document.write(image.outerHTML);
     };
 
     return (
@@ -81,9 +133,18 @@ const ProductForm = ({product, changeProductDetails}: IProps) => {
             </RowField>
 
             <RowField label='Изображение'>
-                <Upload beforeUpload={() => false} multiple onChange={handleImageUpload}>
-                    <Button icon={<UploadOutlined/>}>Загрузить</Button>
-                </Upload>
+                <ImgCrop rotationSlider>
+                    <Upload
+                        customRequest={handleImageUpload}
+                        multiple
+                        fileList={imgList}
+                        listType="picture-card"
+                        onPreview={onPreview}
+                        onRemove={handleImageRemove}
+                    >
+                        {imgList.length < 5 && '+ Загрузить'}
+                    </Upload>
+                </ImgCrop>
             </RowField>
         </div>
     );

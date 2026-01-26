@@ -32,7 +32,11 @@ const Product = ({product, onCardClick}: IProps) => {
             <div className={styles.productImg}>
                 <Carousel arrows infinite={false} rootClassName={styles.carouselContainer}>
                     {product.img?.map((url, index) =>
-                        <div key={`container-${index}`} className={styles.carouselSlide}>
+                        <div
+                            key={`container-${index}`}
+                            className={styles.carouselSlide}
+                            onClick={event => event.stopPropagation()}
+                        >
                             <img
                                 key={`img-${index}`}
                                 alt={`${product.title}-${index}`}
