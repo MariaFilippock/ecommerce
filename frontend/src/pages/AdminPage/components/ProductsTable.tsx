@@ -2,6 +2,7 @@ import React from 'react';
 import {Table} from 'antd';
 import {IProduct} from '../../../models';
 import {ColumnsType} from 'antd/es/table';
+import styles from '../AdminPage.module.scss';
 
 interface IProps {
     products: IProduct[];
@@ -9,9 +10,7 @@ interface IProps {
 }
 
 const ProductsTable = ({products, onProductClick}: IProps) => {
-    console.log(products);
-
-    const productColumns: ColumnsType<IProduct> = [
+    const productColumns = [
         {
             key: 'id',
             title: 'id',
@@ -26,24 +25,33 @@ const ProductsTable = ({products, onProductClick}: IProps) => {
             key: 'desc',
             title: 'Описание товара',
             dataIndex: 'desc',
-            width: 500,
         },
         {
             key: 'category',
-            align: 'center',
             title: 'Категория товара',
             dataIndex: 'category'
         },
         {
             key: 'price',
-            align: 'center',
             title: 'Цена товара',
             dataIndex: 'price'
         },
         {
             key: 'img',
             title: 'Изображение',
-            dataIndex: 'img'
+            dataIndex: 'img',
+            render: (imgs: string[]) => (
+                <div className={styles.imgsGroup}>
+                    {imgs.slice(0,2).map((src, i) => (
+                        <img
+                            alt={src.split('/').pop()}
+                            key={i}
+                            src={src}
+                            style={{width: 40, marginRight: 4}}
+                        />
+                    ))}
+                </div>
+            )
         }
     ];
 
@@ -57,7 +65,7 @@ const ProductsTable = ({products, onProductClick}: IProps) => {
                         onProductClick?.(record)
                     },
                 })}
-                columns={productColumns}
+                columns={productColumns as ColumnsType<IProduct>}
                 dataSource={products || []}
                 pagination={false}
             />

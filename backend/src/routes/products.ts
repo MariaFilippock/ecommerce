@@ -1,6 +1,7 @@
 import {Router} from 'express';
 import _productsData from '../data/data.json';
 import {IProductsState} from '../models';
+import {deleteFromYandex} from '../yandexStorage';
 
 const productsData = _productsData as IProductsState;
 
@@ -56,7 +57,7 @@ productsRouter.delete('/products/delete/:id', (req, res) => {
 })
 
 //редактирование данных по товару из общего списка
-productsRouter.put('/products/update/:id', (req, res) => {
+productsRouter.put('/products/update/:id', async (req, res) => {
     try {
         const editedProduct = req.body;
 
@@ -64,6 +65,11 @@ productsRouter.put('/products/update/:id', (req, res) => {
 
         if (index === -1) {
             return res.status(404).json('Товар не найден!')
+        }
+        //добавить сверку по урлам? и если отсутствует url то удаляем через команду
+        const urls = productsData.products[index].img.filter(url => !editedProduct.img.includes(url));
+        if (urls.length > 0) {
+            await deleteFromYandex(urls);
         }
 
         productsData.products[index] = {

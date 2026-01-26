@@ -54,19 +54,9 @@ const ProductForm = ({product, changeProductDetails}: IProps) => {
         }
     };
 
-    const handleImageRemove = async (file: UploadFile) => {
+    const handleImageRemove = (file: UploadFile) => {
         try {
-            const res = await fetch('/api/delete-by-url', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({url: file.url})
-            });
-
-            const data = await res.json();
-
-            changeProductDetails({img: product.img.filter(url => url !== data.url)});
+            changeProductDetails({img: product.img.filter(url => url !== file.url)});
 
             return true;
         } catch (e) {

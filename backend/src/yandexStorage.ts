@@ -1,4 +1,4 @@
-import {S3Client, PutObjectCommand, DeleteObjectCommand} from "@aws-sdk/client-s3";
+import {S3Client, PutObjectCommand, DeleteObjectCommand, DeleteObjectCommandOutput} from "@aws-sdk/client-s3";
 import dotenv from "dotenv";
 
 if (process.env.NODE_ENV !== "production") {
@@ -32,13 +32,17 @@ export const uploadToYandex = async (fileBuffer: Buffer, fileName: string, mimeT
     return `https://storage.yandexcloud.net/${bucket}/${key}`;
 };
 
-export const deleteFromYandex = async (url: string): Promise<void> => {
-    const key = url.split(`${bucket}/`)[1];
+export const deleteFromYandex = (urls: string[]): Promise<DeleteObjectCommandOutput[]> => {
+    const requests = urls.map(url => {
+        const key = url.split(`${bucket}/`)[1];
 
-    await s3.send(
-        new DeleteObjectCommand({
-            Bucket: bucket,
-            Key: key,
-        })
-    );
+        return s3.send(
+            new DeleteObjectCommand({
+                Bucket: bucket,
+                Key: key,
+            })
+        );
+    });
+    
+    return Promise.all(requests);
 };

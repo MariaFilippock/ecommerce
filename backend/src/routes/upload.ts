@@ -30,21 +30,21 @@ uploadRouter.post('/upload', upload.single("file"), async (req, res) => {
     }
 });
 
-uploadRouter.delete('/delete-by-url', async (req, res) => {
-    try {
-        const {url} = req.body;
-
-        if (!url) {
-            return res.status(400).json({message: "URL is required"});
-        }
-
-        await deleteFromYandex(url);
-
-        res.json({message: "File deleted successfully", url});
-    } catch (e) {
-        console.error(e);
-        res.status(500).json({message: "Delete error"});
-    }
-})
+// uploadRouter.delete('/delete-by-url', async (req, res) => {
+//     try {
+//         const {url} = req.body;
+//
+//         if (!url) {
+//             return res.status(400).json({message: "URL is required"});
+//         }
+//
+//         await deleteFromYandex(url);
+//
+//         res.json({message: "File deleted successfully", url});
+//     } catch (e) {
+//         console.error(e);
+//         res.status(500).json({message: "Delete error"});
+//     }
+// })
 
 export default uploadRouter;
