@@ -6,6 +6,8 @@ import {IAppState, IProduct} from '../../../models';
 import {useSelector} from 'react-redux';
 import {postNewProductThunk} from '../../../store/product-thunk';
 import ProductForm from '../components/ProductForm';
+import {isEmpty} from 'lodash';
+import {TFormErrorMap, validateFormValues} from '../ValidationUtils';
 
 interface IProps {
     onSuccessAdd: () => void
@@ -23,6 +25,7 @@ const defaultProduct = {
 const AddProductForm = ({onSuccessAdd}: IProps) => {
     const dispatch = useAppDispatch();
     const [product, setProduct] = useState<IProduct>(defaultProduct as IProduct);
+    const [formErrors, setFormErrors] = useState<Partial<TFormErrorMap>>({});
     const status = useSelector((state: IAppState) => state.productsData.status);
 
     const changeProductDetails = (changes: Partial<IProduct>) => {
@@ -32,9 +35,15 @@ const AddProductForm = ({onSuccessAdd}: IProps) => {
         }));
     }
 
-    const handleAddNewProduct = async () => {
-        dispatch(postNewProductThunk(product, onSuccessAdd));
-        setProduct(defaultProduct);
+    const handleAddNewProduct = () => {
+        const validationResult = validateFormValues(product);
+
+        if (isEmpty(validationResult)) {
+            dispatch(postNewProductThunk(product, onSuccessAdd));
+            setProduct(defaultProduct);
+        } else {
+            setFormErrors(validationResult);
+        }
     }
 
     return (
@@ -44,6 +53,8 @@ const AddProductForm = ({onSuccessAdd}: IProps) => {
             <ProductForm
                 product={product}
                 changeProductDetails={changeProductDetails}
+                formErrors={formErrors}
+                setFormErrors={setFormErrors}
             />
 
             <div className={styles.buttonsContainer}>

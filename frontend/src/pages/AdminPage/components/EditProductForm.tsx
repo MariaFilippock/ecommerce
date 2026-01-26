@@ -5,6 +5,8 @@ import ProductForm from '../components/ProductForm';
 import {useAppDispatch} from '../../../store/hooks';
 import {deleteProductThunk, editProductThunk} from '../../../store/product-thunk';
 import styles from '../AdminPage.module.scss';
+import {isEmpty} from 'lodash';
+import {TFormErrorMap, validateFormValues} from './../ValidationUtils';
 
 interface IProps {
     product: IProduct,
@@ -14,6 +16,7 @@ interface IProps {
 const EditProductForm = ({product, onSuccessEdit}: IProps) => {
     const dispatch = useAppDispatch();
     const [editedProduct, setEditedProduct] = useState(product);
+    const [formErrors, setFormErrors] = useState<Partial<TFormErrorMap>>({});
 
     const changeProductDetails = (changes: Partial<IProduct>) => {
         setEditedProduct(state => ({
@@ -26,11 +29,24 @@ const EditProductForm = ({product, onSuccessEdit}: IProps) => {
         <div>
             <h3 className={styles.title}>Редактирование товара</h3>
 
-            <ProductForm product={editedProduct} changeProductDetails={changeProductDetails}/>
+            <ProductForm
+                product={editedProduct}
+                formErrors={formErrors}
+                setFormErrors={setFormErrors}
+                changeProductDetails={changeProductDetails}
+            />
             <div className={styles.buttonsContainer}>
                 <Button
                     type='primary'
-                    onClick={() => dispatch(editProductThunk(editedProduct, onSuccessEdit))}
+                    onClick={() => {
+                        const validationResult = validateFormValues(editedProduct);
+
+                        if (isEmpty(validationResult)) {
+                            dispatch(editProductThunk(editedProduct, onSuccessEdit))
+                        } else {
+                            setFormErrors(validationResult);
+                        }
+                    }}
                 >
                     Сохранить изменения
                 </Button>
