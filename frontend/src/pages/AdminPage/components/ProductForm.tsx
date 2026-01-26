@@ -1,35 +1,38 @@
 import React from 'react';
 import styles from '../AdminPage.module.scss';
 import {RowField} from '../../../components/RowField/RowField';
-import {GetProp, Input, Select, Upload, UploadFile, UploadProps} from 'antd';
+import {GetProp, Input, InputNumber, Select, Upload, UploadFile, UploadProps} from 'antd';
 import {FULL_WIDTH_STYLE, PRODUCT_CATEGORY_DICT} from '../../../const';
 import {convertToSelectOptions} from '../../../helpers';
 import ImgCrop from 'antd-img-crop';
 import {IProduct} from '../../../models';
+import {omit} from 'lodash';
+import {ERROR_FIELD_NAME, TFormErrorMap} from './../ValidationUtils';
 
 interface IProps {
     product: IProduct;
     changeProductDetails: (changes: Partial<IProduct>) => void;
+    formErrors: Partial<TFormErrorMap>;
+    setFormErrors: (errors: Partial<TFormErrorMap>) => void;
 }
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
-const ProductForm = ({product, changeProductDetails}: IProps) => {
+const ProductForm = ({product, changeProductDetails, formErrors, setFormErrors}: IProps) => {
 
     const handleCategoryChange = (value: string) => {
         changeProductDetails({category: value});
+        setFormErrors(omit(formErrors, [ERROR_FIELD_NAME.category]));
     };
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         changeProductDetails({title: e.target.value});
+        setFormErrors(omit(formErrors, [ERROR_FIELD_NAME.title]));
     };
 
     const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         changeProductDetails({desc: e.target.value});
-    };
-
-    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        changeProductDetails({price: e.target.value});
+        setFormErrors(omit(formErrors, [ERROR_FIELD_NAME.desc]));
     };
 
     const handleImageUpload: UploadProps['customRequest'] = async (options) => {
@@ -57,7 +60,6 @@ const ProductForm = ({product, changeProductDetails}: IProps) => {
     const handleImageRemove = (file: UploadFile) => {
         try {
             changeProductDetails({img: product.img.filter(url => url !== file.url)});
-
             return true;
         } catch (e) {
             console.error(e);
@@ -90,7 +92,7 @@ const ProductForm = ({product, changeProductDetails}: IProps) => {
 
     return (
         <div className={styles.addNewProductContainer}>
-            <RowField label='Название товара'>
+            <RowField label='Название товара' errors={formErrors.title}>
                 <Input type='text'
                        value={product.title}
                        placeholder='Введите название товара'
@@ -98,13 +100,13 @@ const ProductForm = ({product, changeProductDetails}: IProps) => {
                 />
             </RowField>
 
-            <RowField label='Вид товара'>
+            <RowField label='Вид товара' errors={formErrors.category}>
                 <Select value={product.category} style={FULL_WIDTH_STYLE} onChange={handleCategoryChange}>
                     {convertToSelectOptions(PRODUCT_CATEGORY_DICT)}
                 </Select>
             </RowField>
 
-            <RowField label='Описание'>
+            <RowField label='Описание' errors={formErrors.desc}>
                 <Input
                     type='text'
                     value={product.desc}
@@ -113,16 +115,24 @@ const ProductForm = ({product, changeProductDetails}: IProps) => {
                 />
             </RowField>
 
-            <RowField label='Цена'>
-                <Input
-                    type='text'
-                    value={product.price}
+            <RowField label='Цена' errors={formErrors.price}>
+                <InputNumber<number>
+                    value={Number(product.price) || 0}
                     placeholder='Введите цену товара в долларах'
-                    onChange={handlePriceChange}
+                    onChange={(value: number | null) => changeProductDetails({price: value !== null ? String(value) : ''})}
+                    formatter={(value?: number) => {
+                        if (value === undefined) return '';
+                        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                    }}
+                    parser={(value?: string) => {
+                        if (!value) return 0;
+                        return Number(value.replace(/ /g, ''));
+                    }}
+                    style={{width: '100%'}}
                 />
             </RowField>
 
-            <RowField label='Изображение'>
+            <RowField label='Изображение' requiredMark={false}>
                 <ImgCrop rotationSlider>
                     <Upload
                         customRequest={handleImageUpload}
