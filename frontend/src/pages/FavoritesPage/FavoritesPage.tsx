@@ -29,7 +29,7 @@ const FavoritesPage = () => {
     };
 
     return (
-        <main>
+        <div className={styles.wrapper}>
             {favoritesList.length > 0 ? (
                 favoritesList.map((favProduct: IProduct) => (
                     <Product key={favProduct.id} product={favProduct} onCardClick={handleDetailProductCardClick}/>
@@ -43,7 +43,7 @@ const FavoritesPage = () => {
                     </div>
                 </div>
             )}
-        </main>
+        </div>
     );
 };
 
