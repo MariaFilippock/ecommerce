@@ -31,14 +31,14 @@ const DetailProductCardPage = () => {
     }
 
     return (
-        <div className={styles.detailsContainer}>
+        <div className={styles.wrapper}>
             <div className={styles.imgContainer}>
                 {product?.img.map((url, index) =>
                     <img key={`${product?.title}-${index}`} alt={product?.title} src={url} className={styles.imgEl} />
                 )}
             </div>
 
-            <div>
+            <div className={styles.infoContainer}>
                 <h2>{product?.title}</h2>
                 <h2 >{product.price} $</h2>
                 <div className={styles.description}>{product.desc}</div>

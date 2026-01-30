@@ -1,8 +1,13 @@
 main .product {
   width: 32%;
-  margin-bottom: 50px;
   overflow: hidden;
   position: relative;
+}
+
+@media (max-width: 767px) {
+  main .product {
+    width: 48%;
+  }
 }
 
 .productImg {
@@ -35,7 +40,7 @@ img {
 }
 
 main b {
-  margin: 10px 20px;
+  margin: 0 20px;
   color: #333;
 }
 
@@ -51,7 +56,7 @@ main b {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-height: 105px;
+  //max-height: 105px;
 }
 
 .addCart {

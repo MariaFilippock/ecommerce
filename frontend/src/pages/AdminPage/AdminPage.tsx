@@ -8,6 +8,7 @@ import EditProductForm from './components/EditProductForm';
 import {useSelector} from 'react-redux';
 import {loadProductsThunk} from '../../store/product-thunk';
 import {useAppDispatch} from '../../store/hooks';
+import styles from './AdminPage.module.scss';
 
 const ADD_TAB_KEY = 'ADD_TAB_KEY';
 export type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
@@ -101,26 +102,28 @@ const AdminPage = () => {
     };
 
     return (
-        <Tabs
-            type="editable-card"
-            activeKey={activeKey}
-            items={[{
-                key: EAdministrationTab.PRODUCTS_TABLE,
-                label: Text.Administration.productsTable,
-                children: (
-                    <>
-                        <Button type='primary' onClick={addNewProduct} style={{marginBottom: '20px'}}>
-                            Добавить новый товар
-                        </Button>
+        <div className={styles.wrapper}>
+            <Tabs
+                type="editable-card"
+                activeKey={activeKey}
+                items={[{
+                    key: EAdministrationTab.PRODUCTS_TABLE,
+                    label: Text.Administration.productsTable,
+                    children: (
+                        <>
+                            <Button type='primary' onClick={addNewProduct} style={{marginBottom: '20px'}}>
+                                Добавить новый товар
+                            </Button>
 
-                        <ProductsTable products={products} onProductClick={editProductTab}/>
-                    </>
-                ),
-            }, ...tabs]}
-            onChange={onChange}
-            onEdit={(targetKey: TargetKey) => remove(targetKey)}
-            hideAdd
-        />
+                            <ProductsTable products={products} onProductClick={editProductTab}/>
+                        </>
+                    ),
+                }, ...tabs]}
+                onChange={onChange}
+                onEdit={(targetKey: TargetKey) => remove(targetKey)}
+                hideAdd
+            />
+        </div>
     );
 };
 

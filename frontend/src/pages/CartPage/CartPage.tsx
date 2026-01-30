@@ -15,7 +15,7 @@ const CartPage = () => {
     const dispatch = useAppDispatch();
 
     const {cart, isLoading} = useSelector((state: IAppState) => state.productsData);
-    console.log(cart);
+
     useEffect(() => {
         dispatch(loadCartThunk());
     }, [dispatch]);
@@ -30,7 +30,7 @@ const CartPage = () => {
     if (isLoading) return <p>Загрузка корзины...</p>;
 
     return (
-        <div className={styles.cartContent}>
+        <div className={styles.wrapper}>
             <h2>Корзина</h2>
 
             <>
@@ -47,15 +47,15 @@ const CartPage = () => {
 
                                 <div className={styles.orderInfo}>
                                     <div>
-                                        <div className={styles.text}>Количество</div>
+                                        <div>Количество</div>
                                         <div>{quantity} шт</div>
                                     </div>
                                     <div>
-                                        <div className={styles.text}>Общая стоимость товаров</div>
+                                        <div>Общая стоимость товаров</div>
                                         <div>{totalCost} $</div>
                                     </div>
                                     <div>
-                                        <div className={styles.text}>Итого</div>
+                                        <div>Итого</div>
                                         <div>{totalCost} $</div>
                                     </div>
                                 </div>

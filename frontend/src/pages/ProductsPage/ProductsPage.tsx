@@ -6,7 +6,7 @@ import {useNavigate} from 'react-router-dom';
 import {loadProductsThunk} from '../../store/product-thunk';
 import {useAppDispatch} from '../../store/hooks';
 import {useSelector} from 'react-redux';
-
+import styles from './ProductsPage.module.scss';
 
 const ProductsPage = () => {
     const dispatch = useAppDispatch();
@@ -22,11 +22,11 @@ const ProductsPage = () => {
     }
 
     return (
-        <main>
+        <div className={styles.wrapper}>
             {products.map((el: IProduct) => (
                 <Product onCardClick={handleDetailProductCardClick} key={el.id} product={el}/>
             ))}
-        </main>
+        </div>
     );
 };
 

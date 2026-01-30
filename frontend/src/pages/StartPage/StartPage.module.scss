@@ -28,3 +28,9 @@ ul li {
 .descContainer > div > div > div {
   margin: 4px 10px 15px 10px;
 }
+
+@media (max-width: 768px) {
+  .techBlock {
+    flex-direction: column;
+  }
+}
