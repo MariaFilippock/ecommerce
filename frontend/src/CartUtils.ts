@@ -13,8 +13,8 @@ export class UtilsComponent {
         }, 0).toFixed(2);
     }
 
-    totalCostPerProduct(cart: ICartProduct) {
-        return Number(cart.price) * cart.count;
+    totalCostPerProduct(cartProduct: ICartProduct) {
+        return (Number(cartProduct.price) * cartProduct.count).toFixed(2);
     }
 }
 

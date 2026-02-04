@@ -6,6 +6,7 @@ export enum ERROR_FIELD_NAME {
     title = 'title',
     desc = 'desc',
     price = 'price',
+    totalCount = 'totalCount'
 }
 
 /** Мапа полей с ошибками. */
@@ -13,9 +14,12 @@ export type TFormErrorMap = Record<ERROR_FIELD_NAME, string[] | undefined>;
 
 export const REQUIRED_FIELD_MESSAGE = 'Поле обязательно для заполнения';
 
-
 export const validateString = (str?: string | null): string[] | undefined => {
     return str ? undefined : [REQUIRED_FIELD_MESSAGE];
+};
+
+export const validateNumber = (num?: number | null): string[] | undefined => {
+    return isNil(num) ? [REQUIRED_FIELD_MESSAGE] : undefined;
 };
 
 /**Запуск валидаторов после сабмита всей формы.*/
@@ -26,6 +30,7 @@ export function validateFormValues(formValues: IProduct): Partial<TFormErrorMap>
     errorsMap.category = validateString(formValues.category);
     errorsMap.title = validateString(formValues.title);
     errorsMap.price = validateString(formValues.price);
+    errorsMap.totalCount = validateNumber(formValues.totalCount);
 
     return omitBy(errorsMap, isNil);
 }

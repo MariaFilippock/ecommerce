@@ -33,7 +33,7 @@ productsRouter.post('/products/create', (req, res) => {
     try {
         const newProduct = req.body;
         const nextId = productsData.products.length > 0 ? Math.max(...productsData.products.map(el => el.id)) + 1 : 1;
-        const productToSave = {...newProduct, id: nextId};
+        const productToSave = {...newProduct, id: nextId, isDeleted: false};
 
         productsData.products.push(productToSave);
 
@@ -48,7 +48,6 @@ productsRouter.delete('/products/delete/:id', (req, res) => {
     try {
         const removedProductId = Number(req.params.id);
         productsData.products = productsData.products.filter(product => product.id !== removedProductId);
-
 
         res.status(200).send();
     } catch (e) {

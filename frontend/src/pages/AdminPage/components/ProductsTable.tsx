@@ -32,6 +32,11 @@ const ProductsTable = ({products, onProductClick}: IProps) => {
             dataIndex: 'category'
         },
         {
+            key: 'totalCount',
+            title: 'Наличие, шт',
+            dataIndex: 'totalCount'
+        },
+        {
             key: 'price',
             title: 'Цена товара',
             dataIndex: 'price'
@@ -42,7 +47,7 @@ const ProductsTable = ({products, onProductClick}: IProps) => {
             dataIndex: 'img',
             render: (imgs: string[]) => (
                 <div className={styles.imgsGroup}>
-                    {imgs.slice(0,2).map((src, i) => (
+                    {imgs.slice(0, 2).map((src, i) => (
                         <img
                             alt={src.split('/').pop()}
                             key={i}

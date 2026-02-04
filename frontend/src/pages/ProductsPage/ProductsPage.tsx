@@ -13,6 +13,8 @@ const ProductsPage = () => {
     const navigate = useNavigate();
     const products = useSelector((state: IAppState) => state.productsData.products);
 
+    const existedProducts = products.filter(product => product.totalCount !== 0);
+
     useEffect(() => {
         dispatch(loadProductsThunk());
     }, [dispatch]);
@@ -23,7 +25,7 @@ const ProductsPage = () => {
 
     return (
         <div className={styles.wrapper}>
-            {products.map((el: IProduct) => (
+            {existedProducts.map((el: IProduct) => (
                 <Product onCardClick={handleDetailProductCardClick} key={el.id} product={el}/>
             ))}
         </div>

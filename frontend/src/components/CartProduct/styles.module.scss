@@ -1,8 +1,54 @@
 .product {
   max-width: 250px;
   margin-bottom: 50px;
-  overflow: hidden;
   position: relative;
+}
+
+.productImgWrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.lastUnits {
+  position: absolute;
+  width: 100%;
+  background-color: black;
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+  font-size: 12px;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+.productOutOfStock img {
+  opacity: 0.4;
+}
+
+.productOutOfStock::after {
+  content: 'Нет в наличии';
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 600;
+  font-size: 20px;
+  color: #565553;
+
+  background: rgba(255, 255, 255, 0.6);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 110px;
+  cursor: pointer;
 }
 
 .productTitle {
@@ -31,14 +77,6 @@ img {
   width: 100%;
   max-height: 400px;
   object-fit: contain; //чтобы картинку не обрезало
-  cursor: pointer;
-}
-
-.productInfo {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 110px;
   cursor: pointer;
 }
 
@@ -72,4 +110,9 @@ img {
   font-size: 12px;
   margin: 0 12px;
   cursor: pointer;
+}
+
+.hiddenPlus {
+  margin: 0 12px;
+  visibility: hidden;
 }

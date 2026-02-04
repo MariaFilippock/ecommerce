@@ -3,7 +3,7 @@ import styles from './styles.module.scss';
 import {MinusOutlined, PlusOutlined} from '@ant-design/icons';
 import {ICartProduct} from '../../models';
 import {useNavigate} from 'react-router-dom';
-import {ROUTES} from '../../const';
+import {lastUnits, ROUTES} from '../../const';
 import CartUtils from '../../CartUtils';
 import {changeProductCountThunk} from '../../store/cart-thunks';
 import {useAppDispatch} from '../../store/hooks';
@@ -27,7 +27,10 @@ const CartProduct = ({product}: IProps) => {
 
     const handleAddProductToCart = () => {
         const cartProduct = {...product, count: +1};
-        dispatch(changeProductCountThunk(cartProduct));
+
+        if (product.totalCount > product.count) {
+            dispatch(changeProductCountThunk(cartProduct));
+        }
     };
 
     const handleDetailProductCardClick = () => {
@@ -36,18 +39,22 @@ const CartProduct = ({product}: IProps) => {
 
     return (
         <div className={styles.product}>
-            <Carousel arrows infinite={false} rootClassName={styles.carouselContainer}>
-                {product.img?.map((url, index) =>
-                    <div key={index} className={styles.carouselSlide}>
+            <div className={`${styles.productImgWrapper} ${product.totalCount === 0 ? styles.productOutOfStock : '' }`}>
+                {(0 < product.totalCount && product.totalCount < lastUnits) && <div className={styles.lastUnits}>Последние единицы</div>}
+
+                <Carousel arrows infinite={false} rootClassName={styles.carouselContainer}>
+                    {product.img?.map((url, index) =>
+                        <div key={index} className={styles.carouselSlide}>
                             <img
                                 alt={`${product.title}-${index}`}
                                 src={url}
                                 onClick={handleDetailProductCardClick}
                                 className={styles.carouselImg}
                             />
-                    </div>
-                )}
-            </Carousel>
+                        </div>
+                    )}
+                </Carousel>
+            </div>
 
             <div className={styles.productInfo}>
                 <h3 className={styles.productTitle} onClick={handleDetailProductCardClick}>{product.title}</h3>
@@ -58,7 +65,8 @@ const CartProduct = ({product}: IProps) => {
                     <div className={styles.productQuantitySelector}>
                         <MinusOutlined className={styles.minus} onClick={handleRemoveProductFromCart}/>
                         <span className={styles.count}>{product.count}</span>
-                        <PlusOutlined className={styles.plus} onClick={handleAddProductToCart}/>
+                        <PlusOutlined className={product.totalCount > product.count ? styles.plus : styles.hiddenPlus}
+                                      onClick={handleAddProductToCart}/>
                     </div>
                 </div>
             </div>
