@@ -9,6 +9,7 @@ import {IProduct} from '../../../models';
 import {omit} from 'lodash';
 import {ERROR_FIELD_NAME, TFormErrorMap} from './../ValidationUtils';
 
+
 interface IProps {
     product: IProduct;
     changeProductDetails: (changes: Partial<IProduct>) => void;
@@ -33,6 +34,11 @@ const ProductForm = ({product, changeProductDetails, formErrors, setFormErrors}:
     const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         changeProductDetails({desc: e.target.value});
         setFormErrors(omit(formErrors, [ERROR_FIELD_NAME.desc]));
+    };
+
+    const handleTotalCountChange = (value: number | null) => {
+        changeProductDetails({totalCount: Number(value)});
+        setFormErrors(omit(formErrors, [ERROR_FIELD_NAME.totalCount]));
     };
 
     const handleImageUpload: UploadProps['customRequest'] = async (options) => {
@@ -91,14 +97,15 @@ const ProductForm = ({product, changeProductDetails, formErrors, setFormErrors}:
     };
 
     return (
-        <div className={styles.addNewProductContainer}>
-            <RowField label='Название товара' errors={formErrors.title}>
-                <Input type='text'
-                       value={product.title}
-                       placeholder='Введите название товара'
-                       onChange={handleTitleChange}
-                />
-            </RowField>
+            <div className={styles.addNewProductContainer}>
+                <RowField label='Название товара' errors={formErrors.title}>
+                    <Input type='text'
+                           value={product.title}
+                           placeholder='Введите название товара'
+                           onChange={handleTitleChange}
+                           className={styles.width100percent}
+                    />
+                </RowField>
 
             <RowField label='Вид товара' errors={formErrors.category}>
                 <Select value={product.category} style={FULL_WIDTH_STYLE} onChange={handleCategoryChange}>
@@ -106,47 +113,59 @@ const ProductForm = ({product, changeProductDetails, formErrors, setFormErrors}:
                 </Select>
             </RowField>
 
-            <RowField label='Описание' errors={formErrors.desc}>
-                <Input
-                    type='text'
-                    value={product.desc}
-                    placeholder='Введите описание товара'
-                    onChange={handleDescriptionChange}
-                />
-            </RowField>
+                <RowField label='Описание' errors={formErrors.desc}>
+                    <Input
+                        type='text'
+                        value={product.desc}
+                        placeholder='Введите описание товара'
+                        onChange={handleDescriptionChange}
+                    />
+                </RowField>
 
-            <RowField label='Цена' errors={formErrors.price}>
-                <InputNumber<number>
-                    value={Number(product.price) || 0}
-                    placeholder='Введите цену товара в долларах'
-                    onChange={(value: number | null) => changeProductDetails({price: value !== null ? String(value) : ''})}
-                    formatter={(value?: number) => {
-                        if (value === undefined) return '';
-                        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-                    }}
-                    parser={(value?: string) => {
-                        if (!value) return 0;
-                        return Number(value.replace(/ /g, ''));
-                    }}
-                    style={{width: '100%'}}
-                />
-            </RowField>
+                <RowField label='Цена' errors={formErrors.price}>
+                    <InputNumber<number>
+                        value={Number(product.price) || 0}
+                        placeholder='Введите цену товара в долларах'
+                        onChange={(value: number | null) => {
+                            changeProductDetails({price: value !== null ? String(value) : ''})
+                            setFormErrors(omit(formErrors, [ERROR_FIELD_NAME.totalCount]))
+                        }}
+                        formatter={(value?: number) => {
+                            if (value === undefined) return '';
+                            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                        }}
+                        parser={(value?: string) => {
+                            if (!value) return 0;
+                            return Number(value.replace(/ /g, ''));
+                        }}
+                        style={{width: '100%', display: 'flex'}}
+                    />
+                </RowField>
 
-            <RowField label='Изображение' requiredMark={false}>
-                <ImgCrop rotationSlider>
-                    <Upload
-                        customRequest={handleImageUpload}
-                        multiple
-                        fileList={imgList}
-                        listType="picture-card"
-                        onPreview={onPreview}
-                        onRemove={handleImageRemove}
-                    >
-                        {imgList.length < 5 && '+ Загрузить'}
-                    </Upload>
-                </ImgCrop>
-            </RowField>
-        </div>
+                <RowField label='Количество, шт' errors={formErrors.totalCount}>
+                    <InputNumber<number>
+                        value={Number(product.totalCount) || 0}
+                        placeholder='Введите количество товаров в наличии'
+                        onChange={handleTotalCountChange}
+                        style={{width: '100%', display: 'flex'}}
+                    />
+                </RowField>
+
+                <RowField label='Изображение' requiredMark={false}>
+                    <ImgCrop rotationSlider>
+                        <Upload
+                            customRequest={handleImageUpload}
+                            multiple
+                            fileList={imgList}
+                            listType="picture-card"
+                            onPreview={onPreview}
+                            onRemove={handleImageRemove}
+                        >
+                            {imgList.length < 5 && '+ Загрузить'}
+                        </Upload>
+                    </ImgCrop>
+                </RowField>
+            </div>
     );
 };
 

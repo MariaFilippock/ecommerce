@@ -19,7 +19,8 @@ const defaultProduct = {
     img: [],
     desc: '',
     category: '',
-    price: ''
+    price: '',
+    totalCount: 0
 };
 
 const AddProductForm = ({onSuccessAdd}: IProps) => {

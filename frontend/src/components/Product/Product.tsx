@@ -7,6 +7,7 @@ import {changeProductCountThunk} from '../../store/cart-thunks';
 import {useAppDispatch} from '../../store/hooks';
 import {toggleFavoritesThunk} from '../../store/favorites-thunk';
 import {Carousel} from 'antd';
+import {lastUnits} from '../../const';
 
 interface IProps {
     product: IProduct;
@@ -15,12 +16,18 @@ interface IProps {
 
 const Product = ({product, onCardClick}: IProps) => {
     const favorites = useSelector((state: IAppState) => state.productsData.favorites ?? []);
+    const cart = useSelector((state: IAppState) => state.productsData.cart ?? []);
     const isFavorite = favorites.some((favorite) => favorite.id === product.id);
     const dispatch = useAppDispatch();
 
+    const cartItem = cart.find(el => el.id === product.id);
+
     const handleAddProductAtCart = () => {
         const cartProduct = {...product, count: +1};
-        dispatch(changeProductCountThunk(cartProduct));
+
+        if (!cartItem || product.totalCount > cartItem.count) {
+            dispatch(changeProductCountThunk(cartProduct));
+        }
     };
 
     const handleToggleFavorites = () => {
@@ -29,7 +36,9 @@ const Product = ({product, onCardClick}: IProps) => {
 
     return (
         <div className={styles.product}>
-            <div className={styles.productImg}>
+            <div className={product.totalCount > 0 ? styles.productImg : styles.productOutOfStock}>
+                {(0 < product.totalCount && product.totalCount < lastUnits) && <div className={styles.lastUnits}>Последние единицы</div>}
+
                 <Carousel arrows infinite={false} rootClassName={styles.carouselContainer}>
                     {product.img?.map((url, index) =>
                         <div

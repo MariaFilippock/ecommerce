@@ -17,6 +17,7 @@ export interface IProduct {
     desc: string;
     category: string;
     price: string;
+    totalCount: number;
 }
 
 export interface ICartProduct extends IProduct {

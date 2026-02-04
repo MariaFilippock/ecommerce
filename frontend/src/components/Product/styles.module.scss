@@ -10,9 +10,39 @@ main .product {
   }
 }
 
+.lastUnits {
+  position: absolute;
+  width: 100%;
+  background-color: black;
+  color: white;
+  top: 0;
+  left: 0;
+  padding: 10px 0;
+  text-align: center;
+  font-size: 12px;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
 .productImg {
   position: relative;
   overflow: hidden;
+}
+
+.productOutOfStock img {
+  opacity: 0.4;
+}
+
+.productOutOfStock::after {
+  content: 'Нет в наличии';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 20px;
+  color: #565553;
 }
 
 .carouselContainer {
@@ -29,7 +59,6 @@ main .product {
 
 .carouselImg {
   width: 100%;
-  //max-height: 400px;
   object-fit: contain; //чтобы картинку не обрезало
   cursor: pointer;
 }

@@ -19,6 +19,8 @@ const AdminPage = () => {
     const [tabs, setTabs] = useState<NonNullable<TabsProps['items']>>([]);
     const products = useSelector((state: IAppState) => state.productsData.products);
 
+    // const filteredProducts = products.filter(product => !product.isDeleted);
+
     /**
      Загрузка списка товаров
      */
@@ -108,6 +110,7 @@ const AdminPage = () => {
                 activeKey={activeKey}
                 items={[{
                     key: EAdministrationTab.PRODUCTS_TABLE,
+                    closable: false,
                     label: Text.Administration.productsTable,
                     children: (
                         <>

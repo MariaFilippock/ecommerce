@@ -1,14 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import styles from './styles.module.scss';
 import {useParams} from 'react-router-dom';
-import {IProduct} from '../../models';
+import {IAppState, IProduct} from '../../models';
 import {changeProductCountThunk} from '../../store/cart-thunks';
 import {useAppDispatch} from '../../store/hooks';
+import {useSelector} from 'react-redux';
 
 const DetailProductCardPage = () => {
     const {id} = useParams<{ id: string }>();
+    const cart = useSelector((state: IAppState) => state.productsData.cart);
     const dispatch = useAppDispatch();
     const [product, setProduct] = useState<IProduct | null>(null);
+
+    const cartItem = cart.find(item => item.id === product?.id);
 
     useEffect(() => {
         if (id) {
@@ -22,7 +26,10 @@ const DetailProductCardPage = () => {
     const handleAddProductAtCart = () => {
         if (product) {
             const cartProduct = {...product, count: +1};
-            dispatch(changeProductCountThunk(cartProduct));
+
+            if (!cartItem || product.totalCount > cartItem.count) {
+                dispatch(changeProductCountThunk(cartProduct));
+            }
         }
     }
 
@@ -34,17 +41,21 @@ const DetailProductCardPage = () => {
         <div className={styles.wrapper}>
             <div className={styles.imgContainer}>
                 {product?.img.map((url, index) =>
-                    <img key={`${product?.title}-${index}`} alt={product?.title} src={url} className={styles.imgEl} />
+                    <img key={`${product?.title}-${index}`} alt={product?.title} src={url} className={styles.imgEl}/>
                 )}
             </div>
 
             <div className={styles.infoContainer}>
                 <h2>{product?.title}</h2>
-                <h2 >{product.price} $</h2>
+                <h2>{product.price} $</h2>
                 <div className={styles.description}>{product.desc}</div>
-                <div className={styles.addCart} onClick={handleAddProductAtCart}>
-                    Добавить в корзину
-                </div>
+                {product.totalCount === 0
+                    ? <div className={styles.outOfStock}>Нет в наличии</div>
+                    : <div className={styles.addCart} onClick={handleAddProductAtCart}>
+                        Добавить в корзину
+                    </div>
+                }
+
             </div>
         </div>
     );
